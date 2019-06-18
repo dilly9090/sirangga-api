@@ -89,7 +89,7 @@
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a> --}}
                     @php
-                        $api=['alat','alat-ruang','eselon-1','eselon-2','notifikasi','pinjam','pinjam-by-peminjam/{user_id}','pinjam-by-ruang/{ruang_id}','pinjam-alat','pinjam-alat-by-pinjamid/{pinjam_id}','pinjam-notes','pinjam-notes-by-pinjamid/{pinjam_id}','pinjam-notes-by-userid/{user_id}','pinjam-rate','pinjam-rate-by-pinjam/{pinjam_id}','role','ruang','slider','user'];
+                        $api=['alat','alat-ruang','eselon-1','eselon-2','notifikasi','pinjam','pinjam-by-peminjam/{user_id}','pinjam-by-ruang/{ruang_id}','pinjam-alat','pinjam-alat-by-pinjamid/{pinjam_id}','pinjam-notes','pinjam-notes-by-pinjamid/{pinjam_id}','pinjam-notes-by-userid/{user_id}','pinjam-rate','pinjam-rate-by-pinjam/{pinjam_id}','role','ruang','slider','user','update-profil/{iduser}','login'];
                     @endphp
                     <ul style="list-style: none">
                         @foreach ($api as $item)

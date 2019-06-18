@@ -322,6 +322,16 @@ class ApiController extends Controller
     {
         $user=$request->username;
         $pass=$request->password;
-        $us=User::where('username',$user)->first();
+        $us=User::where('username',$user)->orWhere('email',$user)->first();
+        if($us)
+        {
+            $data['data']=$us;
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
     }
 }

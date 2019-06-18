@@ -38,5 +38,9 @@ Route::get('pinjam-rate-by-pinjam/{id}','ApiController@pinjam_rate_by_pinjam');
 Route::get('role','ApiController@role');
 Route::get('ruang','ApiController@ruang');
 Route::get('slider','ApiController@slider');
+
 Route::get('user','ApiController@user');
+Route::post('update-profil/{id}','ApiController@update_profil');
+
+
 Route::post('login','ApiController@login');

@@ -318,6 +318,38 @@ class ApiController extends Controller
         }
         return $data;
     }
+    
+    public function update_profil(Request $req,$id)
+    {
+        $user=User::find($id);
+        $simpan==0;
+
+        $user->email = is_null($req->email) ? '-' : $req->email;
+        $user->name = is_null($req->name) ? '-' : $req->name;
+        $user->phone = is_null($req->phone) ? '-' : $req->phone;
+        $user->username = is_null($req->username) ? '-' : $req->username;
+        $user->nip = is_null($req->nip) ? '-' : $req->nip;
+        $c=$user->save();
+        
+        if($c)
+            $simpan=1;
+
+        if($simpan==1)
+        {
+            $data['data']=$user;
+            $data['pesan']='Update Profil Berhasil';
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['pesan']='Update Profil Gagal';
+            $data['status']='error';
+        }
+        return $data;
+    }
+
+
     public function login(Request $request)
     {
         $user=$request->username;

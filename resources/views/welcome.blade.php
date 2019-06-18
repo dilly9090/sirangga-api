@@ -93,7 +93,7 @@
                     @endphp
                     <ul style="list-style: none">
                         @foreach ($api as $item)
-                            <li style="padding:3px 0;border-bottom:1px dotted #ddd;">{{url('/')}}/{{$item}}</li>
+                            <li style="padding:3px 0;border-bottom:1px dotted #ddd;">{{url('/')}}/api/{{$item}}</li>
                         @endforeach
                     </ul>
                 </div>

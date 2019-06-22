@@ -152,6 +152,53 @@ class ApiController extends Controller
         }
         return $data;
     }
+   
+    public function pinjam_by_month($month,$year)
+    {
+        // $pinjam=Pinjam::where('ruang_id',$id)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        if($pinjam->count()!=0)
+        {
+            $pinj=array();
+            foreach($pinjam as $k=>$v)
+            {
+                list($thn,$bln,$tgl)=explode('-',strtok($v->mulai,' '));
+                if((int)$bln==$month && $year==$thn)
+                    $pinj[]=$v;
+            }
+            $data['data']=$pinj;
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
+    public function pinjam_by_date($date1,$date2)
+    {
+        $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        if($pinjam->count()!=0)
+        {
+            // $pinj=array();
+            // foreach($pinjam as $k=>$v)
+            // {
+
+            //     $pinj[]=$v;
+            // }
+            $data['data']=$pinjam;
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
+
     public function pinjam_alat()
     {
         $pinjam=PinjamAlat::with('pinjam')->with('alat')->get();
@@ -344,6 +391,33 @@ class ApiController extends Controller
         {
             $data['data']=array();
             $data['pesan']='Update Profil Gagal';
+            $data['status']='error';
+        }
+        return $data;
+    }
+    
+    public function changepassword(Request $req,$id)
+    {
+        $user=User::find($id);
+        $simpan==0;
+
+        $user->password = is_null($req->password) ? '-' : bcrypt($req->password);
+        $user->password_real = is_null($req->password) ? '-' : $req->password;
+        $c=$user->save();
+        
+        if($c)
+            $simpan=1;
+
+        if($simpan==1)
+        {
+            $data['data']=$user;
+            $data['pesan']='Ubah Password  Berhasil';
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['pesan']='Ubah Password Gagal';
             $data['status']='error';
         }
         return $data;

@@ -166,7 +166,7 @@ class ApiController extends Controller
                 if((int)$bln==$month && $year==$thn)
                     $pinj[]=$v;
             }
-            // $data['data']=$pinjam;
+            $data['data']=$pinj;
             $data['status']='success';
         }
         else

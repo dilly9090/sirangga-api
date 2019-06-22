@@ -395,6 +395,33 @@ class ApiController extends Controller
         }
         return $data;
     }
+    
+    public function changepassword(Request $req,$id)
+    {
+        $user=User::find($id);
+        $simpan==0;
+
+        $user->password = is_null($req->password) ? '-' : bcrypt($req->password);
+        $user->password_real = is_null($req->password) ? '-' : $req->password;
+        $c=$user->save();
+        
+        if($c)
+            $simpan=1;
+
+        if($simpan==1)
+        {
+            $data['data']=$user;
+            $data['pesan']='Ubah Password  Berhasil';
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['pesan']='Ubah Password Gagal';
+            $data['status']='error';
+        }
+        return $data;
+    }
 
 
     public function login(Request $request)

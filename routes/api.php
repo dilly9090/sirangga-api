@@ -26,6 +26,7 @@ Route::get('notifikasi','ApiController@notifikasi');
 Route::get('pinjam','ApiController@pinjam');
 Route::get('pinjam-by-peminjam/{id}','ApiController@pinjam_by_peminjam');
 Route::get('pinjam-by-ruang/{id}','ApiController@pinjam_by_ruang');
+
 Route::get('jadwal-by-month/{month}/{year}','ApiController@pinjam_by_month');
 Route::get('jadwal-by-date/{date1}/{date2}','ApiController@pinjam_by_date');
 
@@ -43,6 +44,7 @@ Route::get('slider','ApiController@slider');
 
 Route::get('user','ApiController@user');
 Route::post('update-profil/{id}','ApiController@update_profil');
+Route::post('changepassword/{id}','ApiController@changepassword');
 
 //jadwalfilterbydate
 //jadwalall

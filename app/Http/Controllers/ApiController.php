@@ -152,6 +152,48 @@ class ApiController extends Controller
         }
         return $data;
     }
+   
+    public function pinjam_by_month($month,$year)
+    {
+        // $pinjam=Pinjam::where('ruang_id',$id)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        $pinjam=Pinjam::where("date_trunc('month', mulai)", "=", $month)
+                ->where("date_trunc('year', mulai)", "=", $year)
+                ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        if($pinjam->count()!=0)
+        {
+            $data['data']=$pinjam;
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
+    public function pinjam_by_date($date1,$date2)
+    {
+        $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        if($pinjam->count()!=0)
+        {
+            // $pinj=array();
+            // foreach($pinjam as $k=>$v)
+            // {
+
+            //     $pinj[]=$v;
+            // }
+            $data['data']=$pinjam;
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
+
     public function pinjam_alat()
     {
         $pinjam=PinjamAlat::with('pinjam')->with('alat')->get();

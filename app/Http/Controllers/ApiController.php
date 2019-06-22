@@ -156,8 +156,8 @@ class ApiController extends Controller
     public function pinjam_by_month($month,$year)
     {
         // $pinjam=Pinjam::where('ruang_id',$id)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
-        $pinjam=Pinjam::where("DATE_TRUNC('month', mulai)", "=", $month)
-                ->where("DATE_TRUNC('year', mulai)", "=", $year)
+        $pinjam=Pinjam::whereRaw("DATE_TRUNC('month', mulai)", "=", $month)
+                ->whereRaw("DATE_TRUNC('year', mulai)", "=", $year)
                 ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
         if($pinjam->count()!=0)
         {

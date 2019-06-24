@@ -431,13 +431,24 @@ class ApiController extends Controller
         $us=User::where('username',$user)->orWhere('email',$user)->first();
         if($us)
         {
-            $data['data']=$us;
-            $data['status']='success';
+            if(Hash::check($pass,$us->password)) 
+            {
+                $data['data']=$us;
+                $data['status']='success';
+            } 
+            else 
+            {
+                $data['data']=array();
+                $data['status']='error';
+            }
+            
         }
         else
         {
             $data['data']=array();
             $data['status']='error';
         }
+
+        return $data;
     }
 }

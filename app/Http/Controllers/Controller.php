@@ -10,4 +10,19 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function date_range($first, $last, $step = '+1 day', $output_format = 'd/m/Y' ) {
+
+        $dates = array();
+        $current = strtotime($first);
+        $last = strtotime($last);
+
+        while( $current <= $last ) {
+
+            $dates[] = date($output_format, $current);
+            $current = strtotime($step, $current);
+        }
+
+        return $dates;
+    }
 }

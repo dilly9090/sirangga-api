@@ -187,7 +187,14 @@ class ApiController extends Controller
             foreach($pinjam as $k=>$v)
             {
                 $tgl=strtok($v->mulai,' ');
-                $pinj[$tgl][]=$v;
+                $tgl2=strtok($v->selesai,' ');
+
+                $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+                foreach($period as $pk=>$pv)
+                {
+                    // $pinj[$tgl][]=$v;
+                    $pinj[$pv][]=$v;
+                }
             }
             $pjm=array();
             foreach($pinj as $k=>$v)
@@ -196,10 +203,12 @@ class ApiController extends Controller
                 $idx=0;
                 foreach($v as $kk=>$item)
                 {
+                    $sl=explode(' ',$item->selesai);
+                    $mul=explode(' ',$item->mulai);
                     $pjm[$x]['event'][$idx]['id']=$item->id;
                     $pjm[$x]['event'][$idx]['name']=$item->topik;
-                    $pjm[$x]['event'][$idx]['waktu_mulai']=trim(str_replace($k,'',$item->mulai));
-                    $pjm[$x]['event'][$idx]['waktu_selesai']=trim(str_replace($k,'',$item->selesai));
+                    $pjm[$x]['event'][$idx]['waktu_mulai']=$mul[1];
+                    $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
                     $pjm[$x]['event'][$idx]['tgl_selesai']=trim(strtok($item->selesai,' '));
                     $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
                     $idx++;

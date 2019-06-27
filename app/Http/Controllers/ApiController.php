@@ -182,13 +182,27 @@ class ApiController extends Controller
         // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
         if($pinjam->count()!=0)
         {
-            // $pinj=array();
-            // foreach($pinjam as $k=>$v)
-            // {
-
-            //     $pinj[]=$v;
-            // }
-            $data['data']=$pinjam;
+            $pinj=array();
+            $x=0;
+            foreach($pinjam as $k=>$v)
+            {
+                $tgl=strtok($v->mulai,' ');
+                $pinj[$tgl][]=$v;
+            }
+            $pjm=array();
+            foreach($pinj as $k=>$v)
+            {
+                $pjm[$x]['date']=$k;
+                $idx=0;
+                foreach($v as $kk=>$item)
+                {
+                    $pjm[$x]['event'][$idx]['id']=$item->id;
+                    $pjm[$x]['event'][$idx]['name']=$item->topik;
+                    $idx++;
+                }
+                $x++;
+            }
+            $data['data']=$pjm;
             $data['status']='success';
         }
         else

@@ -369,13 +369,14 @@ class ApiController extends Controller
     public function update_profil(Request $req,$id)
     {
         $user=User::find($id);
-        $simpan==0;
+        $simpan=0;
 
         $user->email = is_null($req->email) ? '-' : $req->email;
         $user->name = is_null($req->name) ? '-' : $req->name;
         $user->phone = is_null($req->phone) ? '-' : $req->phone;
         $user->username = is_null($req->username) ? '-' : $req->username;
         $user->nip = is_null($req->nip) ? '-' : $req->nip;
+        $user->phone = is_null($req->phone) ? '-' : $req->phone;
         $c=$user->save();
         
         if($c)

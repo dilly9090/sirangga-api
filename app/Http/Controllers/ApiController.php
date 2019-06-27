@@ -164,9 +164,39 @@ class ApiController extends Controller
             {
                 list($thn,$bln,$tgl)=explode('-',strtok($v->mulai,' '));
                 if((int)$bln==$month && $year==$thn)
-                    $pinj[]=$v;
+                {
+                    $tgl=strtok($v->mulai,' ');
+                    $tgl2=strtok($v->selesai,' ');
+                    $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+                    foreach($period as $pk=>$pv)
+                    {
+                        // $pinj[$tgl][]=$v;
+                        $pinj[$pv][]=$v;
+                    }
+                    // $pinj[]=$v;
+                }
             }
-            $data['data']=$pinj;
+            $x=0;
+            $pjm=array();
+            foreach($pinj as $k=>$v)
+            {
+                $pjm[$x]['date']=$k;
+                $idx=0;
+                foreach($v as $kk=>$item)
+                {
+                    $sl=explode(' ',$item->selesai);
+                    $mul=explode(' ',$item->mulai);
+                    $pjm[$x]['event'][$idx]['id']=$item->id;
+                    $pjm[$x]['event'][$idx]['name']=$item->topik;
+                    $pjm[$x]['event'][$idx]['waktu_mulai']=$mul[1];
+                    $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
+                    $pjm[$x]['event'][$idx]['tgl_selesai']=trim(strtok($item->selesai,' '));
+                    $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
+                    $idx++;
+                }
+                $x++;
+            }
+            $data['data']=$pjm;
             $data['status']='success';
         }
         else

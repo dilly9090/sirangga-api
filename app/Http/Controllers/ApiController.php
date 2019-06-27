@@ -198,6 +198,10 @@ class ApiController extends Controller
                 {
                     $pjm[$x]['event'][$idx]['id']=$item->id;
                     $pjm[$x]['event'][$idx]['name']=$item->topik;
+                    $pjm[$x]['event'][$idx]['waktu_mulai']=trim(str_replace($k,'',$item->mulai));
+                    $pjm[$x]['event'][$idx]['waktu_selesai']=trim(str_replace($k,'',$item->selesai));
+                    $pjm[$x]['event'][$idx]['tgl_selesai']=trim(strtok($item->selesai,' '));
+                    $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
                     $idx++;
                 }
                 $x++;

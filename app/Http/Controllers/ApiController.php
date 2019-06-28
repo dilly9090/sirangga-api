@@ -206,10 +206,10 @@ class ApiController extends Controller
         }
         return $data;
     }
-    public function getbydate($date,$time)
+    public function getbydate($date,$time,$idruang)
     {
         $datetime=strtotime($date.' '.$time);
-        $pinjam=Pinjam::whereDate('mulai', $date)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        $pinjam=Pinjam::whereDate('mulai', $date)->where('ruang_id',$idruang)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
         if($pinjam->count()!=0)
         {
             $pinj=array();

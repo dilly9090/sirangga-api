@@ -206,6 +206,47 @@ class ApiController extends Controller
         }
         return $data;
     }
+    public function getbydate($date)
+    {
+        $pinjam=Pinjam::whereDate('mulai', $date)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        if($pinjam->count()!=0)
+        {
+            $pinj=array();
+            $x=0;
+            foreach($pinjam as $k=>$v)
+            {
+                $tgl=strtok($v->mulai,' ');
+                $tgl2=strtok($v->selesai,' ');
+
+                $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+                foreach($period as $pk=>$pv)
+                {
+                    // $pinj[$tgl][]=$v;
+                    $pinj[$pv]=$v;
+                }
+            }
+            // return $pinj;
+            if(isset($pinj[$date]))
+            {
+                $dataa['data']=$pinj;
+                $data['statuspinjam']='ada';
+                $data['status']='success';
+            }
+            else{
+
+                $data['data']=array();
+                $data['statuspinjam']='tidak';
+                $data['status']='success';
+            }
+        }
+        else
+        {
+            $data['data']=array();
+            $data['statuspinjam']='tidak';
+            $data['status']='error';
+        }
+        return $data;
+    }
     public function pinjam_by_date($date1,$date2)
     {
         $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();

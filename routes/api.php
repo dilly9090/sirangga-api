@@ -29,6 +29,7 @@ Route::get('pinjam-by-ruang/{id}','ApiController@pinjam_by_ruang');
 
 Route::get('jadwal-by-month/{month}/{year}','ApiController@pinjam_by_month');
 Route::get('jadwal-by-date/{date1}/{date2}','ApiController@pinjam_by_date');
+Route::get('cekjadwal-by-date/{date}','ApiController@getbydate');
 
 Route::get('pinjam-alat','ApiController@pinjam_alat');
 Route::get('pinjam-alat-by-pinjamid/{id}','ApiController@pinjam_alat_by_pinjamid');

@@ -206,8 +206,9 @@ class ApiController extends Controller
         }
         return $data;
     }
-    public function getbydate($date)
+    public function getbydate($date,$time)
     {
+        $datetime=strtotime($date.' '.$time);
         $pinjam=Pinjam::whereDate('mulai', $date)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
         if($pinjam->count()!=0)
         {
@@ -215,20 +216,40 @@ class ApiController extends Controller
             $x=0;
             foreach($pinjam as $k=>$v)
             {
-                $tgl=strtok($v->mulai,' ');
-                $tgl2=strtok($v->selesai,' ');
-
-                $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
-                foreach($period as $pk=>$pv)
-                {
-                    // $pinj[$tgl][]=$v;
-                    $pinj[$pv]=$v;
+                // if(strpos($v->mulai,$datetime)!==false)
+                // {
+                // $tgl=strtok($v->mulai,' ');
+                // $tgl2=strtok($v->selesai,' ');
+                    $tgl=$v->mulai;
+                    $tgl2=$v->selesai;
+                    // $pinj[]=$v;
+                // }
+                $start = strtotime($tgl);
+                $end = strtotime($tgl2);
+                // $time=
+                if($datetime >= $start && $datetime <= $end) {
+                // ok
+                    $pinj[$x]['ruangan']=$v->ruang->nama;
+                    $pinj[$x]['mulai']=$tgl;
+                    $pinj[$x]['selesai']=$tgl2;
+                    $pinj[$x]['event']=$v->topik;
+                    $pinj[$x]['id']=$v->id;
+                    $pinj[$x]['status']=$v->status;
+                    $x++;
+                } else {
+                // not ok
                 }
+                // $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d H:i:s");
+                // foreach($period as $pk=>$pv)
+                // {
+                //     // $pinj[$tgl][]=$v;
+                //     $pinj[$pv]=$v;
+                // }
             }
             // return $pinj;
-            if(isset($pinj[$date]))
+            if(count($pinj)!=0)
             {
-                $dataa['data']=$pinj;
+                $data['data']=$pinj;
                 $data['statuspinjam']='ada';
                 $data['status']='success';
             }

@@ -571,4 +571,46 @@ class ApiController extends Controller
 
         return $data;
     }
+
+    public function simpanpinjamruang(Request $request,$iduser)
+    {
+        $pinjam=new Pinjam;
+        $pinjam->users_peminjam_id=is_null($request->users_peminjam_id) ? '-' : $request->users_peminjam_id;
+        $pinjam->ruang_id=is_null($request->ruang_id) ? '-' : $request->ruang_id;
+        $pinjam->file=is_null($request->file) ? '-' : $request->file;
+        $pinjam->keterangan=is_null($request->keterangan) ? '-' : $request->keterangan;
+        $pinjam->mulai=is_null($request->mulai) ? '-' : $request->mulai;
+        $pinjam->selesai=is_null($request->selesai) ? '-' : $request->selesai;
+        $pinjam->topik=is_null($request->topik) ? '-' : $request->topik;
+        $pinjam->layout=is_null($request->layout) ? '-' : $request->layout;
+        $pinjam->status=is_null($request->status) ? '-' : $request->status;
+        $pinjam->undangan=is_null($request->undangan) ? '-' : $request->undangan;
+        $pinjam->pinjam_notes_id=is_null($request->pinjam_notes_id) ? '-' : $request->pinjam_notes_id;
+        $pinjam->jumlah_peserta=is_null($request->jumlah_peserta) ? '-' : $request->jumlah_peserta;
+        $pinjam->pengguna_pic_pinjam_id=is_null($request->pengguna_pic_pinjam_id) ? '-' : $request->pengguna_pic_pinjam_id;
+        $pinjam->undangan=is_null($request->undangan) ? '-' : $request->undangan;
+        $pinjam->pinjam_rate_id=is_null($request->pinjam_rate_id) ? '-' : $request->pinjam_rate_id;
+        $pinjam->rating=is_null($request->rating) ? '-' : $request->rating;
+        $pinjam->rate=is_null($request->rating) ? '-' : $request->rating;
+        $c=$pinjam->pimpinan_rapat=is_null($request->pimpinan_rapat) ? '-' : $request->pimpinan_rapat;
+        if($c)
+            $simpan=1;
+
+        if($simpan==1)
+        {
+            $data['data']=$user;
+            $data['pesan']='Insert Data Peminjaman  Berhasil';
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['pesan']='Insert Data Peminjaman Gagal';
+            $data['status']='error';
+        }
+        return $data;
+        //PinjamAlat
+        //PinjamNotes
+        //PinjamRate
+    }
 }

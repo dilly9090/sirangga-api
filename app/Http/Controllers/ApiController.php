@@ -575,7 +575,7 @@ class ApiController extends Controller
     public function simpanpinjamruang(Request $request,$iduser)
     {
         $pinjam=new Pinjam;
-        $pinjam->users_peminjam_id=is_null($request->users_peminjam_id) ? '-' : $request->users_peminjam_id;
+        $pinjam->users_peminjam_id=$iduser;
         $pinjam->ruang_id=is_null($request->ruang_id) ? '-' : $request->ruang_id;
         $pinjam->file=is_null($request->file) ? '-' : $request->file;
         $pinjam->keterangan=is_null($request->keterangan) ? '-' : $request->keterangan;
@@ -583,22 +583,22 @@ class ApiController extends Controller
         $pinjam->selesai=is_null($request->selesai) ? '-' : $request->selesai;
         $pinjam->topik=is_null($request->topik) ? '-' : $request->topik;
         $pinjam->layout=is_null($request->layout) ? '-' : $request->layout;
-        $pinjam->status=is_null($request->status) ? '-' : $request->status;
+        $pinjam->status=is_null($request->status) ? 0 : $request->status;
         $pinjam->undangan=is_null($request->undangan) ? '-' : $request->undangan;
-        $pinjam->pinjam_notes_id=is_null($request->pinjam_notes_id) ? '-' : $request->pinjam_notes_id;
-        $pinjam->jumlah_peserta=is_null($request->jumlah_peserta) ? '-' : $request->jumlah_peserta;
-        $pinjam->pengguna_pic_pinjam_id=is_null($request->pengguna_pic_pinjam_id) ? '-' : $request->pengguna_pic_pinjam_id;
-        $pinjam->undangan=is_null($request->undangan) ? '-' : $request->undangan;
-        $pinjam->pinjam_rate_id=is_null($request->pinjam_rate_id) ? '-' : $request->pinjam_rate_id;
-        $pinjam->rating=is_null($request->rating) ? '-' : $request->rating;
-        $pinjam->rate=is_null($request->rating) ? '-' : $request->rating;
-        $c=$pinjam->pimpinan_rapat=is_null($request->pimpinan_rapat) ? '-' : $request->pimpinan_rapat;
+        $pinjam->pinjam_notes_id=is_null($request->pinjam_notes_id) ? 0 : $request->pinjam_notes_id;
+        $pinjam->jumlah_peserta=is_null($request->jumlah_peserta) ? 0 : $request->jumlah_peserta;
+        $pinjam->pengguna_pic_pinjam_id=is_null($request->pengguna_pic_pinjam_id) ? 0 : $request->pengguna_pic_pinjam_id;
+        $pinjam->pinjam_rate_id=is_null($request->pinjam_rate_id) ? 0 : $request->pinjam_rate_id;
+        $pinjam->rating=is_null($request->rating) ? false : $request->rating;
+        $pinjam->rate=is_null($request->rating) ? 0 : $request->rating;
+        $pinjam->pimpinan_rapat=is_null($request->pimpinan_rapat) ? '-' : $request->pimpinan_rapat;
+        $c=$pinjam->save();
         if($c)
             $simpan=1;
 
         if($simpan==1)
         {
-            $data['data']=$user;
+            $data['data']=$pinjam;
             $data['pesan']='Insert Data Peminjaman  Berhasil';
             $data['status']='success';
         }

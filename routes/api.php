@@ -52,4 +52,4 @@ Route::post('changepassword/{id}','ApiController@changepassword');
 //jadwalfilterbydate
 
 Route::post('login','ApiController@login');
-Route::post('simpanpinjamruang{iduser}','ApiController@simpanpinjamruang');
+Route::post('simpanpinjamruang/{iduser}','ApiController@simpanpinjamruang');

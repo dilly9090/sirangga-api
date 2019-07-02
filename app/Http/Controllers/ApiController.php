@@ -613,4 +613,109 @@ class ApiController extends Controller
         //PinjamNotes
         //PinjamRate
     }
+
+    public function pesanan_pending()
+    {
+        $pinjam=Pinjam::where('status',0)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai')->get();
+        if($pinjam->count()!=1)
+        {
+            $data['data']=$pinjam;
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
+    public function list_notif()
+    {
+        
+    }
+    public function list_notif_by_user($id)
+    {
+        $notif=Notifikasi::where('user_id',$id)->with('pinjam')->with('user')->orderBy('created_at','desc')->get();
+        if($notif->count()!=1)
+        {
+            $data['data']=$notif;
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
+    public function insert_notif(Request $request)
+    {
+        $notif=new Notifikasi;
+        $notif->caterory = $request->caterory;
+        $notif->message = $request->message;
+        $notif->read = $request->read;
+        $notif->title = $request->title;
+        $notif->user_id = $request->user_id;
+        $notif->pinjam_id = $request->pinjam_id;
+        $c=$notif->save();
+        if($c)
+        {
+            $data['pesan']='Simpan Notifikasi Berhasil';
+            $data['status']='success';
+        }
+        else{
+            $data['pesan']='Simpan Notifikasi Gagal';
+            $data['status']='error';           
+        }
+    }
+    public function update_notif(Request $request,$id)
+    {
+        $notif=Notifikasi::find($id);
+        $notif->caterory = $request->caterory;
+        $notif->message = $request->message;
+        $notif->read = $request->read;
+        $notif->title = $request->title;
+        $notif->user_id = $request->user_id;
+        $notif->pinjam_id = $request->pinjam_id;
+        $c=$notif->save();
+        if($c)
+        {
+            $data['pesan']='Update Notifikasi Berhasil';
+            $data['status']='success';
+        }
+        else{
+            $data['pesan']='Update Notifikasi Gagal';
+            $data['status']='error';           
+        }
+    }
+    public function delete_by_id($id)
+    {
+        $notif=Notifikasi::find($id);
+        if($notif->delete())
+        {
+            $data['pesan']='Hapus Notifikasi Selesai';
+            $data['status']='success';
+        }
+        else
+        {
+            $data['pesan']='Hapus Notifikasi Gagal';
+            $data['status']='error';
+        }
+        return $data;
+    }
+    public function delete_all_by_user($iduser)
+    {
+        $notif=Notifikasi::where('user_id',$id)->get();
+        if($notif->delete())
+        {
+            $data['pesan']='Hapus Notifikasi Selesai';
+            $data['status']='success';
+        }
+        else
+        {
+            $data['pesan']='Hapus Notifikasi Gagal';
+            $data['status']='error';
+        }
+        return $data;
+    }
 }

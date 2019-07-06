@@ -624,7 +624,7 @@ class ApiController extends Controller
     {
         $pinjam=new Pinjam;
         $pinjam->users_peminjam_id=$iduser;
-        $pinjam->ruang_id=is_null($request->ruang_id) ? '-' : $request->ruang_id;
+        $pinjam->ruang_id=$ruang_id=is_null($request->ruang_id) ? '-' : $request->ruang_id;
         $pinjam->file=is_null($request->file) ? '-' : $request->file;
         $pinjam->keterangan=is_null($request->keterangan) ? '-' : $request->keterangan;
         $pinjam->mulai=$mulai=is_null($request->mulai) ? '-' : $request->mulai;

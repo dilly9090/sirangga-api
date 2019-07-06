@@ -127,7 +127,17 @@ class ApiController extends Controller
         $pinjam=Pinjam::where('users_peminjam_id',$id)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
         if($pinjam->count()!=0)
         {
-            $data['data']=$pinjam;
+            $pinj=array();
+            $x=0;
+            foreach($pinjam as $k=>$v)
+            {
+                $pinj[$x]=$v;
+                $pinj[$x]['mulai']=date('d-m-Y H:i:s',strtotime($v->mulai));
+                $pinj[$x]['selesai']=date('d-m-Y H:i:s',strtotime($v->selesai));
+                $x++;
+            }
+            $data['data']=$pinj;
+            // $data['data']=$pinjam;
             $data['status']='success';
         }
         else
@@ -142,7 +152,17 @@ class ApiController extends Controller
         $pinjam=Pinjam::where('ruang_id',$id)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
         if($pinjam->count()!=0)
         {
-            $data['data']=$pinjam;
+            $pinj=array();
+            $x=0;
+            foreach($pinjam as $k=>$v)
+            {
+                $pinj[$x]=$v;
+                $pinj[$x]['mulai']=date('d-m-Y H:i:s',strtotime($v->mulai));
+                $pinj[$x]['selesai']=date('d-m-Y H:i:s',strtotime($v->selesai));
+                $x++;
+            }
+            $data['data']=$pinj;
+            // $data['data']=$pinjam;
             $data['status']='success';
         }
         else
@@ -279,10 +299,12 @@ class ApiController extends Controller
             foreach($pinjam as $k=>$v)
             {
                 $pinj[$x]=$v;
+                $pinj[$x]['mulai']=date('d-m-Y H:i:s',strtotime($v->mulai));
+                $pinj[$x]['selesai']=date('d-m-Y H:i:s',strtotime($v->selesai));
                 $x++;
             }
             $data['data']=$pinj;
-            $data['pinjam']=$pinjam;
+            // $data['pinjam']=$pinjam;
             $data['status']='success';
             
         }

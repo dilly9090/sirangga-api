@@ -667,7 +667,7 @@ class ApiController extends Controller
                 $notif->message = 'Pengajuan pinjaman ruang '.$nama_ruang.' oleh '.$nama_eselon.' pada tanggal '.date('d-m-Y',strtotime($mulai)).' s/d '.date('d-m-Y',strtotime($selesai));
                 $notif->read = false;
                 $notif->title = 'Verifikasi Peminjaman';
-                $notif->user_id = $iduser;
+                $notif->user_id = $v->id;
                 $notif->pinjam_id = $idpinjam;
                 $notif->save();
             }

@@ -667,6 +667,7 @@ class ApiController extends Controller
             $data['pesan']='Simpan Notifikasi Gagal';
             $data['status']='error';           
         }
+        return $data;
     }
     public function update_notif($id)
     {
@@ -682,6 +683,7 @@ class ApiController extends Controller
             $data['pesan']='Update Notifikasi Gagal';
             $data['status']='error';           
         }
+        return $data;
     }
     public function delete_by_id($id)
     {
@@ -728,5 +730,6 @@ class ApiController extends Controller
             $data['pesan']='Update Peminjaman Gagal';
             $data['status']='error';           
         }
+        return $data;
     }
 }

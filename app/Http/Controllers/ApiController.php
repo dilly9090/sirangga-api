@@ -579,8 +579,8 @@ class ApiController extends Controller
         $pinjam->ruang_id=is_null($request->ruang_id) ? '-' : $request->ruang_id;
         $pinjam->file=is_null($request->file) ? '-' : $request->file;
         $pinjam->keterangan=is_null($request->keterangan) ? '-' : $request->keterangan;
-        $pinjam->mulai=is_null($request->mulai) ? '-' : $request->mulai;
-        $pinjam->selesai=is_null($request->selesai) ? '-' : $request->selesai;
+        $pinjam->mulai=$mulai=is_null($request->mulai) ? '-' : $request->mulai;
+        $pinjam->selesai=$selesai=is_null($request->selesai) ? '-' : $request->selesai;
         $pinjam->topik=is_null($request->topik) ? '-' : $request->topik;
         $pinjam->layout=is_null($request->layout) ? '-' : $request->layout;
         $pinjam->status=is_null($request->status) ? 0 : $request->status;
@@ -593,6 +593,9 @@ class ApiController extends Controller
         $pinjam->rate=is_null($request->rating) ? 0 : $request->rating;
         $pinjam->pimpinan_rapat=is_null($request->pimpinan_rapat) ? '-' : $request->pimpinan_rapat;
         $c=$pinjam->save();
+
+        $idpinjam=$pinjam->id;
+
         if($c)
             $simpan=1;
 
@@ -601,6 +604,26 @@ class ApiController extends Controller
             $data['data']=$pinjam;
             $data['pesan']='Insert Data Peminjaman  Berhasil';
             $data['status']='success';
+
+            $role=User::where('role_id',4)->get();
+
+            $eselon=User::where('id',$iduser)->with('eselon2')->first();
+            $nama_eselon=($eselon ? $eselon->eselon2->nama : '');
+            foreach($role as $k=>$v)
+            {
+                $ruang=Ruang::find($ruang_id);
+                $nama_ruang=($ruang ? $ruang->nama : '');
+
+                $notif=new Notifikasi;
+                $notif->caterory = 'Pinjam Ruang';
+                $notif->message = 'Pengajuan pinjaman ruang '.$nama_ruang.' oleh '.$nama_eselon.' pada tanggal '.date('d-m-Y',strtotime($mulai)).' s/d '.date('d-m-Y',strtotime($selesai));
+                $notif->read = false;
+                $notif->title = 'Verifikasi Peminjaman';
+                $notif->user_id = $iduser;
+                $notif->pinjam_id = $idpinjam;
+                $notif->save();
+            }
+
         }
         else
         {

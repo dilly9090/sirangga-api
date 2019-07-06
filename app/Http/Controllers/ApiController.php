@@ -668,7 +668,7 @@ class ApiController extends Controller
             $data['status']='error';           
         }
     }
-    public function update_notif(Request $request,$id)
+    public function update_notif($id)
     {
         $notif=Notifikasi::find($id);
         $notif->read=true;

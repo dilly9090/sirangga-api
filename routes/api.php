@@ -58,7 +58,9 @@ Route::get('update-pemesanan/{idpinjam}/{status}','ApiController@update_pemesana
 
 Route::get('pesanan_pending','ApiController@pesanan_pending');
 Route::get('list_notif_by_user/{id}','ApiController@list_notif_by_user');
+
 Route::post('insert_notif','ApiController@insert_notif');
-Route::post('update_notif/{id}','ApiController@update_notif');
+Route::get('update_notif/{id}','ApiController@update_notif');
+
 Route::get('delete_by_id/{id}','ApiController@delete_by_id');
 Route::get('delete_all_by_user/{iduser}','ApiController@delete_all_by_user');

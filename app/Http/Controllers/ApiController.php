@@ -663,7 +663,7 @@ class ApiController extends Controller
                 $nama_ruang=($ruang ? $ruang->nama : '');
 
                 $notif=new Notifikasi;
-                $notif->caterory = 'Pinjam Ruang';
+                $notif->category = 'Pinjam Ruang';
                 $notif->message = 'Pengajuan pinjaman ruang '.$nama_ruang.' oleh '.$nama_eselon.' pada tanggal '.date('d-m-Y',strtotime($mulai)).' s/d '.date('d-m-Y',strtotime($selesai));
                 $notif->read = false;
                 $notif->title = 'Verifikasi Peminjaman';
@@ -722,7 +722,7 @@ class ApiController extends Controller
     public function insert_notif(Request $request)
     {
         $notif=new Notifikasi;
-        $notif->caterory = $request->caterory;
+        $notif->category = $request->category;
         $notif->message = $request->message;
         $notif->read = $request->read;
         $notif->title = $request->title;

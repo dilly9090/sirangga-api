@@ -671,7 +671,7 @@ class ApiController extends Controller
     public function update_notif(Request $request,$id)
     {
         $notif=Notifikasi::find($id);
-        $notif->read=false;
+        $notif->read=true;
         $c=$notif->save();
         if($c)
         {

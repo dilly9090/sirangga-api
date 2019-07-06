@@ -54,8 +54,9 @@ Route::post('changepassword/{id}','ApiController@changepassword');
 Route::post('login','ApiController@login');
 Route::post('simpanpinjamruang/{iduser}','ApiController@simpanpinjamruang');
 
+Route::get('update-pemesanan/{idpinjam}/{status}','ApiController@update_pemesanan');
+
 Route::get('pesanan_pending','ApiController@pesanan_pending');
-Route::get('list_notif','ApiController@list_notif');
 Route::get('list_notif_by_user/{id}','ApiController@list_notif_by_user');
 Route::post('insert_notif','ApiController@insert_notif');
 Route::post('update_notif/{id}','ApiController@update_notif');

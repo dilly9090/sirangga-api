@@ -718,4 +718,20 @@ class ApiController extends Controller
         }
         return $data;
     }
+
+    public function update_pemesanan($idpinjam,$status)
+    {
+        $pinjam=Pinjam::find($idpinjam);
+        $pinjam->status=$status;
+        $c=$pinjam->save();
+        if($c)
+        {
+            $data['pesan']='Update Peminjaman Berhasil';
+            $data['status']='success';
+        }
+        else{
+            $data['pesan']='Update Peminjaman Gagal';
+            $data['status']='error';           
+        }
+    }
 }

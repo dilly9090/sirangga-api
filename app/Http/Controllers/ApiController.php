@@ -702,7 +702,7 @@ class ApiController extends Controller
     }
     public function delete_all_by_user($iduser)
     {
-        $notif=Notifikasi::where('user_id',$iduser)->get();
+        $notif=Notifikasi::where('user_id',$iduser);
         if($notif->delete())
         {
             $data['pesan']='Hapus Notifikasi Selesai';

@@ -268,6 +268,32 @@ class ApiController extends Controller
         }
         return $data;
     }
+
+    public function jadwal_by_status($iduser,$status)
+    {
+        $pinjam=Pinjam::where('users_peminjam_id',$iduser)->where('status',$status)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();
+        if($pinjam->count()!=0)
+        {
+            $pinj=array();
+            $x=0;
+            foreach($pinjam as $k=>$v)
+            {
+                $pinj[$x]=$v;
+                $x++;
+            }
+            $data['data']=$pinj;
+            $data['pinjam']=$pinjam;
+            $data['status']='success';
+            
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
+
     public function pinjam_by_date($date1,$date2)
     {
         $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai')->orderBy('selesai')->get();

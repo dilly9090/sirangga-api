@@ -688,7 +688,7 @@ class ApiController extends Controller
     public function pesanan_pending()
     {
         $pinjam=Pinjam::where('status',0)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai')->get();
-        if($pinjam->count()!=1)
+        if($pinjam->count()!=0)
         {
             $data['data']=$pinjam;
             $data['status']='success';
@@ -707,7 +707,7 @@ class ApiController extends Controller
     public function list_notif_by_user($id)
     {
         $notif=Notifikasi::where('user_id',$id)->with('pinjam')->with('user')->orderBy('created_at','desc')->get();
-        if($notif->count()!=1)
+        if($notif->count()!=0)
         {
             $data['data']=$notif;
             $data['status']='success';

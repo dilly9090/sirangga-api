@@ -190,7 +190,7 @@ class ApiController extends Controller
                     $pjm[$x]['event'][$idx]['name']=$item->topik;
                     $pjm[$x]['event'][$idx]['waktu_mulai']=$mul[1];
                     $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
-                    $pjm[$x]['event'][$idx]['tgl_selesai']=trim(strtok($item->selesai,' '));
+                    $pjm[$x]['event'][$idx]['tgl_selesai']=date('d-m-Y',strtotime(trim(strtok($item->selesai,' '))));
                     $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
                     $idx++;
                 }
@@ -301,7 +301,7 @@ class ApiController extends Controller
                     $pjm[$x]['event'][$idx]['name']=$item->topik;
                     $pjm[$x]['event'][$idx]['waktu_mulai']=$mul[1];
                     $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
-                    $pjm[$x]['event'][$idx]['tgl_selesai']=trim(strtok($item->selesai,' '));
+                    $pjm[$x]['event'][$idx]['tgl_selesai']=date('d-m-Y',strtotime(trim(strtok($item->selesai,' '))));
                     $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
                     $idx++;
                 }

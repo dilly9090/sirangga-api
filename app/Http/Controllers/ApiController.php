@@ -816,6 +816,7 @@ class ApiController extends Controller
     public function pindah()
     {
         $fileContents='Hello World';
-        Storage::disk('sftp')->put('text.txt', $fileContents);
+        // Storage::disk('sftp')->put('text.txt', $fileContents);
+        Storage::disk('sftp')->put('spiderman.jpg', Storage::get('spiderman.jpg'));
     }
 }

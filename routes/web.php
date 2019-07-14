@@ -11,6 +11,7 @@
 |
 */
 
+Route::get('pindah','ApiController@pindah');
 Route::get('/', function () {
     return view('welcome');
 });

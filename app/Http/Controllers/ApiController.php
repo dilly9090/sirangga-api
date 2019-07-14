@@ -603,7 +603,7 @@ class ApiController extends Controller
             {
                 $us->token_firebase=$request->token;
                 $us->save();
-                
+
                 $data['data']=$us;
                 $data['status']='success';
             } 
@@ -811,5 +811,10 @@ class ApiController extends Controller
             $data['status']='error';           
         }
         return $data;
+    }
+    public function pindah()
+    {
+        $fileContents='Hello World';
+        Storage::disk('sftp')->put('text.txt', $fileContents);
     }
 }

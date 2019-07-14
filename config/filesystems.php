@@ -62,6 +62,23 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
         ],
+        'sftp' => [
+            'driver' => 'sftp',
+            'host' => '192.168.8.2',
+            'username' => 'api',
+            'password' => '**api**',
+            'port' => 22,
+            'root' => '/home/appserve',
+
+            // Settings for SSH key based authentication...
+            // 'privateKey' => '/path/to/privateKey',
+            // 'password' => 'encryption-password',
+
+            // Optional SFTP Settings...
+            // 'port' => 22,
+            // 'root' => '',
+            // 'timeout' => 30,
+        ],
 
     ],
 

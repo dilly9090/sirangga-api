@@ -817,6 +817,9 @@ class ApiController extends Controller
     {
         $fileContents='Hello World';
         // Storage::disk('sftp')->put('text.txt', $fileContents);
-        Storage::disk('sftp')->put('spiderman.jpg', Storage::get('spiderman.jpg'));
+        $filepath = public_path('spiderman.jpg');
+        // Storage::disk('ftp')->put($dir.'/'.$name, fopen($filepath, 'r+'));
+
+        Storage::disk('sftp')->put('spiderman.jpg', fopen($filepath, 'r+'));
     }
 }

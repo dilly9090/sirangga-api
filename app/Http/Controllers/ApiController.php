@@ -686,7 +686,7 @@ class ApiController extends Controller
     }
     public function update_token($iduser,$tokenfirebase)
     {
-        $user=User::find($id);
+        $user=User::find($iduser);
         $user->token_firebase=$tokenfirebase;
         $user->save();
     }

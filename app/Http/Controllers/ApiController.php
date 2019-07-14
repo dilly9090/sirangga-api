@@ -601,6 +601,9 @@ class ApiController extends Controller
         {
             if(Hash::check($pass,$us->password)) 
             {
+                $us->token_firebase=$request->token;
+                $us->save();
+                
                 $data['data']=$us;
                 $data['status']='success';
             } 

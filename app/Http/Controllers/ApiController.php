@@ -813,13 +813,13 @@ class ApiController extends Controller
         }
         return $data;
     }
-    public function pindah()
+    public function pindah($file)
     {
         $fileContents='Hello World';
         // Storage::disk('sftp')->put('text.txt', $fileContents);
-        $filepath = public_path('spiderman.jpg');
+        $filepath = public_path($file);
         // Storage::disk('ftp')->put($dir.'/'.$name, fopen($filepath, 'r+'));
-
-        Storage::disk('sftp')->put('spiderman.jpg', fopen($filepath, 'r+'));
+        $path='sirangga/src/main/resources/uploads/undangan/'.$file;
+        Storage::disk('sftp')->put($path, fopen($filepath, 'r+'));
     }
 }

@@ -68,7 +68,7 @@ return [
             'username' => 'api',
             'password' => '**api**',
             'port' => 22,
-            'root' => '/home/appserve',
+            'root' => '/home/appserv',
 
             // Settings for SSH key based authentication...
             // 'privateKey' => '/path/to/privateKey',

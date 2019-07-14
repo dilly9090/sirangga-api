@@ -65,10 +65,13 @@ return [
         'sftp' => [
             'driver' => 'sftp',
             'host' => '192.168.8.2',
-            'username' => 'api',
-            'password' => '**api**',
+            // 'host' => '203.130.228.202',
+            'username' => 'root',
+            'password' => 'r4mt3c_4dm1n',
+            // 'username' => 'api',
+            // 'password' => '**api**',
             'port' => 22,
-            'root' => '',
+            'root' => '/home/appserv',
 
             // Settings for SSH key based authentication...
             // 'privateKey' => '/path/to/privateKey',

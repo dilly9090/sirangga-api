@@ -17,6 +17,7 @@ use App\Models\Ruang;
 use App\Models\Slider;
 use App\User;
 use Hash;
+use Storage;
 class ApiController extends Controller
 {
     public function alat()

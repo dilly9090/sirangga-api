@@ -688,7 +688,7 @@ class ApiController extends Controller
     {
         $user=User::find($iduser);
         $user->token_firebase=$tokenfirebase;
-        $user->updated_at=date('Y-m-d H:i:s');
+        // $user->updated_at=date('Y-m-d H:i:s');
         $user->save();
     }
     public function pesanan_pending()

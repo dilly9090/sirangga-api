@@ -684,7 +684,12 @@ class ApiController extends Controller
         //PinjamNotes
         //PinjamRate
     }
-
+    public function update_token($iduser,$tokenfirebase)
+    {
+        $user=User::find($id);
+        $user->token_firebase=$tokenfirebase;
+        $user->save();
+    }
     public function pesanan_pending()
     {
         $pinjam=Pinjam::where('status',0)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai')->get();

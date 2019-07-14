@@ -48,6 +48,7 @@ Route::get('ruang','ApiController@ruang');
 Route::get('slider','ApiController@slider');
 
 Route::get('user','ApiController@user');
+Route::get('update-token/{iduser}/{token}','ApiController@update_token');
 Route::post('update-profil/{id}','ApiController@update_profil');
 Route::post('changepassword/{id}','ApiController@changepassword');
 

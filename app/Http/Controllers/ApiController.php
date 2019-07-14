@@ -644,6 +644,24 @@ class ApiController extends Controller
         $pinjam->rating=is_null($request->rating) ? false : $request->rating;
         $pinjam->rate=is_null($request->rating) ? 0 : $request->rating;
         $pinjam->pimpinan_rapat=is_null($request->pimpinan_rapat) ? '-' : $request->pimpinan_rapat;
+
+        if($request->hasFile('undangan')) {
+         
+            //get filename with extension
+            $filenamewithextension = $request->file('undangan')->getClientOriginalName(); 
+            //get filename without extension
+            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+            //get file extension
+            $extension = $request->file('undangan')->getClientOriginalExtension();
+            //filename to store
+            $filenametostore = $filename.'_'.uniqid().'.'.$extension;
+            //Upload File to external server
+            $path='sirangga/src/main/resources/uploads/undangan/'.$filenametostore;
+            Storage::disk('sftp')->put($path, fopen($request->file('undangan'), 'r+'));
+            
+            $pinjam->undangan='undangan/'.$filenametostore;
+            //Store $filenametostore in the database
+        }
         $c=$pinjam->save();
 
         $idpinjam=$pinjam->id;

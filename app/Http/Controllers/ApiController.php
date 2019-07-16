@@ -43,6 +43,7 @@ class ApiController extends Controller
                 ->select('alat_ruang.id as alatruang_id','alat.id as alat_id','alat.kapasitas as kapasitas_alat','alat.nama as nama_alat','ruang.*')
                 ->get();
 
+        
         if($alat->count()!=0)
         {
             $data['data']=$alat;
@@ -491,9 +492,29 @@ class ApiController extends Controller
     public function ruang()
     {
         $ruang=Ruang::with('eselon1')->with('pengguna')->get();
+        $alat=AlatRuang::join('alat', 'alat.id', '=', 'alat_ruang.alat_id')
+                ->select('alat.id as alat_id','alat.kapasitas as kapasitas_alat','alat.nama as nama_alat','alat.*','alat_ruang.alat_id as ar_id','alat_ruang.*')->get();
+        // return $alat;
+        $al=array();
+        foreach($alat as $k=>$v)
+        {
+            $al[$v->ruang_id][]=$v;
+        }
         if($ruang->count()!=0)
         {
-            $data['data']=$ruang;
+            $rg=array();
+            $x=0;
+            foreach($ruang as $r=>$v)
+            {
+                $rg[$x]=$v;
+                if(isset($al[$v->id]))
+                    $rg[$x]['alat']=$al[$v->id];
+                else
+                    $rg[$x]['alat']=array();
+
+                $x++;
+            }
+            $data['data']=$rg;
             $data['status']='success';
         }
         else

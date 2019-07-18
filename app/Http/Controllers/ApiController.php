@@ -618,7 +618,7 @@ class ApiController extends Controller
     {
         $user=$request->username;
         $pass=$request->password;
-        $us=User::where('username',$user)->orWhere('email',$user)->first();
+        $us=User::where('username',$user)->orWhere('email',$user)->with('eselon2')->with('role')->first();
         if($us)
         {
             if(Hash::check($pass,$us->password)) 

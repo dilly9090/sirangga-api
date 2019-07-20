@@ -722,6 +722,22 @@ class ApiController extends Controller
         return $data;
     }
 
+    public function picruangan()
+    {
+        $us=User::where('role_id',2)->get();
+        if($us)
+        {
+            $data['data']=$us;
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
+
     public function simpanpinjamruang(Request $request,$iduser)
     {
         $pinjam=new Pinjam;
@@ -763,6 +779,23 @@ class ApiController extends Controller
         $c=$pinjam->save();
 
         $idpinjam=$pinjam->id;
+
+        // $idalat=$request->idalat;
+        // if($idalat!=0)
+        // {
+        //     $idal=explode(',',$idalat);
+        //     foreach($idal as $item)
+        //     {
+        //         $alat=new PinjamAlat;
+        //         $alat->created_at = date('Y-m-d H:i:s');
+        //         $alat->updated_at = date('Y-m-d H:i:s');
+        //         $alat->jumlah = $;
+        //         $alat->alat_id = date('Y-m-d H:i:s');
+        //         $alat->pinjam_id = date('Y-m-d H:i:s');
+        //         $alat->keterangan = date('Y-m-d H:i:s');
+        //     }
+        // }
+
 
         if($c)
             $simpan=1;

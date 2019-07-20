@@ -244,10 +244,16 @@ class ApiController extends Controller
                     }
                     $pjm[$x]['event'][$idx]['notes']=$notes; 
                     $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
-                    foreach($pinjamalat as $k=>$v)
+                    if($pinjamalat->count()!=0)
                     {
-                       $pjm[$x]['event'][$idx]['pinjam_alat'][]=$v->alat->nama; 
+
+                        foreach($pinjamalat as $k=>$v)
+                        {
+                           $pjm[$x]['event'][$idx]['pinjam_alat'][]=$v->alat->nama; 
+                        }
                     }
+                    else
+                        $pjm[$x]['event'][$idx]['pinjam_alat']=array();
                     // $pjm[$x]['event'][$idx]['pinjam_alat']=isset($item->pinjamalat->id) ? $item->pinjamalat->id : '-';
                     // $pjm[$x]['event'][$idx]['satker']=$item->peminjam->id;
                     $idx++;
@@ -414,10 +420,16 @@ class ApiController extends Controller
                     }
                     $pjm[$x]['event'][$idx]['notes']=$notes; 
                     $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
-                    foreach($pinjamalat as $k=>$v)
+                    if($pinjamalat->count()!=0)
                     {
-                       $pjm[$x]['event'][$idx]['pinjam_alat'][]=$v->alat->nama; 
+
+                        foreach($pinjamalat as $k=>$v)
+                        {
+                           $pjm[$x]['event'][$idx]['pinjam_alat'][]=$v->alat->nama; 
+                        }
                     }
+                    else
+                        $pjm[$x]['event'][$idx]['pinjam_alat']=array();
                     $idx++;
                 }
                 $x++;

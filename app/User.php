@@ -31,9 +31,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Eselon1','eselon1_id');
     }
-    function eselon2()
+    public function eselon2()
     {
         return $this->belongsTo('App\Models\Eselon2','eselon2_id');
+        // return $this->hasOne('App\Models\Eselon2','eselon2_id');
     }
     function role()
     {

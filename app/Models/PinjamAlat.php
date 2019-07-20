@@ -8,9 +8,9 @@ class PinjamAlat extends Model
 {
     protected $table='pinjam_alat';
 
-    function pinjam()
+    function pinjamalat()
     {
-        return $this->belongsTo('App\Models\Pinjam','pinjam_id');
+        return $this->belongsTo('App\Models\Pinjam','id');
     }
     function alat()
     {

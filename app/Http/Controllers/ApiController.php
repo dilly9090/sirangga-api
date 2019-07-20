@@ -178,7 +178,8 @@ class ApiController extends Controller
     public function pinjam_by_month($month,$year)
     {
         // $pinjam=Pinjam::where('ruang_id',$id)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
-        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        // return $pinjam;
         if($pinjam->count()!=0)
         {
             $pinj=array();
@@ -214,6 +215,39 @@ class ApiController extends Controller
                     $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
                     $pjm[$x]['event'][$idx]['tgl_selesai']=date('d-m-Y',strtotime(trim(strtok($item->selesai,' '))));
                     $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
+                    $pjm[$x]['event'][$idx]['agenda']=$item->topik;
+                    $pjm[$x]['event'][$idx]['jumlah_peserta']=$item->jumlah_peserta;
+                    $pjm[$x]['event'][$idx]['pimpinan_rapat']=$item->pimpinan_rapat;
+                    $pjm[$x]['event'][$idx]['keterangan']=$item->keterangan;
+                    $pjm[$x]['event'][$idx]['satker']=isset($item->peminjam->eselon2->nama) ? $item->peminjam->eselon2->nama : '-';
+                    
+                    if($item->layout==1)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Class Room';
+                    elseif($item->layout==2)
+                        $pjm[$x]['event'][$idx]['tata_letak']='U Shape';
+                    elseif($item->layout==3)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Theater';
+                    elseif($item->layout==4)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Upacara';
+                    elseif($item->layout==5)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Lainnya';
+                    else
+                        $pjm[$x]['event'][$idx]['tata_letak']='-';
+                    // $pjm[$x]['event'][$idx]['notes']=isset($item->pinjamnotes->notes) ? $item->pinjamnotes->notes : '-';
+
+                    $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->get();
+                    foreach($pinjamnote as $k=>$v)
+                    {
+                       $pjm[$x]['event'][$idx]['notes'][]=$v->notes; 
+                    }
+
+                    $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
+                    foreach($pinjamalat as $k=>$v)
+                    {
+                       $pjm[$x]['event'][$idx]['pinjam_alat'][]=$v->alat->nama; 
+                    }
+                    // $pjm[$x]['event'][$idx]['pinjam_alat']=isset($item->pinjamalat->id) ? $item->pinjamalat->id : '-';
+                    // $pjm[$x]['event'][$idx]['satker']=$item->peminjam->id;
                     $idx++;
                 }
                 $x++;

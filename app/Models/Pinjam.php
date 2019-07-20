@@ -27,5 +27,6 @@ class Pinjam extends Model
     function pinjamalat()
     {
         return $this->hasMany('App\Models\PinjamAlat','pinjam_id');
+        // return $this->belongsTo('App\Models\PinjamAlat','pinjam_id');
     }
 }

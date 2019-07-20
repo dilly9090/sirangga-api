@@ -953,10 +953,20 @@ class ApiController extends Controller
         $c=$pinjam->save();
         if($c)
         {
+            $us=User::where('role_id',2)->get();
+            if($us)
+            {
+                $data['picruangan']=$us;
+            }
+            else
+            {
+                $data['picruangan']=array();
+            }
             $data['pesan']='Update Peminjaman Berhasil';
             $data['status']='success';
         }
         else{
+            $data['picruangan']=array();
             $data['pesan']='Update Peminjaman Gagal';
             $data['status']='error';           
         }

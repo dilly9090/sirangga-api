@@ -780,22 +780,27 @@ class ApiController extends Controller
 
         $idpinjam=$pinjam->id;
 
-        // $idalat=$request->idalat;
-        // if($idalat!=0)
-        // {
-        //     $idal=explode(',',$idalat);
-        //     foreach($idal as $item)
-        //     {
-        //         $alat=new PinjamAlat;
-        //         $alat->created_at = date('Y-m-d H:i:s');
-        //         $alat->updated_at = date('Y-m-d H:i:s');
-        //         $alat->jumlah = $;
-        //         $alat->alat_id = date('Y-m-d H:i:s');
-        //         $alat->pinjam_id = date('Y-m-d H:i:s');
-        //         $alat->keterangan = date('Y-m-d H:i:s');
-        //     }
-        // }
-
+        // $json='[{"nama": "Sound system rapat", "idalat": "40", "jumlah": "0", "keterangan":"" },
+        //         {"nama": "Infokus","idalat": "44", "jumlah": "2", "keterangan": "test"}, 
+        //         {"nama": "xxx","idalat": "45", "jumlah": "22", "keterangan": "test"}]';
+        
+        $idalat=$request->alat;
+        $d=json_decode($idalat);
+        if(count($d)!=0)
+        {
+            foreach($d as $k=>$v)
+            {
+                $alat=new PinjamAlat;
+                $alat->created_at = date('Y-m-d H:i:s');
+                $alat->updated_at = date('Y-m-d H:i:s');
+                $alat->jumlah = $v['jumlah'];
+                $alat->alat_id = $v['idalat'];
+                $alat->pinjam_id = $idpinjam;
+                $alat->keterangan = $v['keterangan'];
+                $alat->save();
+                // echo '<br>';
+            }
+        }
 
         if($c)
             $simpan=1;

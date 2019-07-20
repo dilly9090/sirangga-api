@@ -25,4 +25,22 @@ class Controller extends BaseController
 
         return $dates;
     }
+
+    public function readjson()
+    {
+        $json='[{"nama": "Sound system rapat", "idalat": "40", "jumlah": "0", "keterangan":"" },
+                {"nama": "Infokus","idalat": "44", "jumlah": "2", "keterangan": "test"}, 
+                {"nama": "xxx","idalat": "45", "jumlah": "22", "keterangan": "test"}]';
+
+        $d=json_decode($json);
+        foreach($d as $k=>$v)
+        {
+            foreach($v as $idx=>$val)
+            {
+                echo $idx.'-'.$val.'<br>';
+            }
+            echo '<br>';
+        }
+        // var_dump($d);
+    }
 }

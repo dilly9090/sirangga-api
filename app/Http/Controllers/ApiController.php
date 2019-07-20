@@ -239,7 +239,8 @@ class ApiController extends Controller
                     $notes='';
                     foreach($pinjamnote as $k=>$v)
                     {
-                        $notes.=$v->notes.'<br>';
+                        if($v->notes!='')
+                            $notes.=$v->notes.'<br>';
                     }
                     $pjm[$x]['event'][$idx]['notes']=$notes; 
                     $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
@@ -408,7 +409,8 @@ class ApiController extends Controller
                     $notes='';
                     foreach($pinjamnote as $k=>$v)
                     {
-                        $notes.=$v->notes.'<br>';
+                        if($v->notes!='')
+                            $notes.=$v->notes.'<br>';
                     }
                     $pjm[$x]['event'][$idx]['notes']=$notes; 
                     $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();

@@ -949,8 +949,8 @@ class ApiController extends Controller
     public function update_pemesanan($idpinjam,$status)
     {
         $pinjam=Pinjam::find($idpinjam);
-        $pinjam->status=$status;
-        $c=$pinjam->save();
+        
+        
 
         $us=User::where('role_id',2)->get();
         if($us)
@@ -961,16 +961,27 @@ class ApiController extends Controller
         {
             $data['picruangan']=array();
         }
-        if($c)
+        if($pinjam)
         {
-           
-            $data['pesan']='Update Peminjaman Berhasil';
-            $data['status']='success';
+            $pinjam->status=$status;
+            $c=$pinjam->save();
+             if($c)
+            {
+            
+                $data['pesan']='Update Peminjaman Berhasil';
+                $data['status']='success';
+            }
+            else{
+                $data['pesan']='Update Peminjaman Gagal';
+                $data['status']='error';           
+            }
         }
-        else{
-            $data['pesan']='Update Peminjaman Gagal';
-            $data['status']='error';           
+        else
+        {
+            $data['pesan']='Data Pinjam Tidak Ditemukan';
+            $data['status']='error'; 
         }
+       
         return $data;
     }
     public function pindah($file)

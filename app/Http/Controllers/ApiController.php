@@ -387,6 +387,33 @@ class ApiController extends Controller
                     $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
                     $pjm[$x]['event'][$idx]['tgl_selesai']=date('d-m-Y',strtotime(trim(strtok($item->selesai,' '))));
                     $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
+                    $pjm[$x]['event'][$idx]['satker']=isset($item->peminjam->eselon2->nama) ? $item->peminjam->eselon2->nama : '-';
+                    
+                    if($item->layout==1)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Class Room';
+                    elseif($item->layout==2)
+                        $pjm[$x]['event'][$idx]['tata_letak']='U Shape';
+                    elseif($item->layout==3)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Theater';
+                    elseif($item->layout==4)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Upacara';
+                    elseif($item->layout==5)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Lainnya';
+                    else
+                        $pjm[$x]['event'][$idx]['tata_letak']='-';
+                    // $pjm[$x]['event'][$idx]['notes']=isset($item->pinjamnotes->notes) ? $item->pinjamnotes->notes : '-';
+
+                    $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->get();
+                    foreach($pinjamnote as $k=>$v)
+                    {
+                       $pjm[$x]['event'][$idx]['notes'][]=$v->notes; 
+                    }
+
+                    $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
+                    foreach($pinjamalat as $k=>$v)
+                    {
+                       $pjm[$x]['event'][$idx]['pinjam_alat'][]=$v->alat->nama; 
+                    }
                     $idx++;
                 }
                 $x++;

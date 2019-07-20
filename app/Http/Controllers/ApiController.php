@@ -951,22 +951,23 @@ class ApiController extends Controller
         $pinjam=Pinjam::find($idpinjam);
         $pinjam->status=$status;
         $c=$pinjam->save();
+
+        $us=User::where('role_id',2)->get();
+        if($us)
+        {
+            $data['picruangan']=$us;
+        }
+        else
+        {
+            $data['picruangan']=array();
+        }
         if($c)
         {
-            $us=User::where('role_id',2)->get();
-            if($us)
-            {
-                $data['picruangan']=$us;
-            }
-            else
-            {
-                $data['picruangan']=array();
-            }
+           
             $data['pesan']='Update Peminjaman Berhasil';
             $data['status']='success';
         }
         else{
-            $data['picruangan']=array();
             $data['pesan']='Update Peminjaman Gagal';
             $data['status']='error';           
         }

@@ -824,6 +824,7 @@ class ApiController extends Controller
         //         {"nama": "xxx","idalat": "45", "jumlah": "22", "keterangan": "test"}]';
         
         $idalat=$request->alat;
+        $d=array();
         if($idalat!='')
         {
             $d=json_decode($idalat);

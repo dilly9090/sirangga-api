@@ -737,7 +737,44 @@ class ApiController extends Controller
         }
         return $data;
     }
-
+    public function simpannotes(Request $request,$idpinjam)
+    {
+        $pinjam=new PinjamNotes;
+        $pinjam->notes = $request->notes;
+        $pinjam->pinjam_id=$idpinjam;
+        $pinjam->pengguna_pic_pinjam_id=$request->pengguna_pic_pinjam_id;
+        if($request->hasFile('lampiran')) {
+         
+            $file=$request->file('lampiran');
+            $filenamewithextension = $request->file('lampiran')->getClientOriginalName(); 
+            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+            $extension = $request->file('lampiran')->getClientOriginalExtension();
+            $filenametostore = $filename.'_'.uniqid().'.'.$extension;
+            $path='sirangga/src/main/resources/uploads/lampiran/'.$filenametostore;
+            // Storage::disk('sftp')->put($path, fopen($request->file('undangan'), 'r+'));
+            $tujuan_upload='lampiran/';
+            $pinjam->lampiran='lampiran/'.$filenametostore;
+            $file->move($tujuan_upload,$filenametostore);
+            
+        }
+        $c=$pinjam->save();
+        if($c)
+        {
+            $id=$pinjam->id;
+            $pjm=Pinjam::find($idpinjam);
+            $pjm->pengguna_pic_pinjam_id = $request->pengguna_pic_pinjam_id;
+            $pjm->pinjam_notes_id=$id;
+            $pjm->save();
+            $data['pesan']='Insert Data Notes Peminjaman  Berhasil';
+            $data['status']='success';
+        }
+        else
+        {
+            $data['pesan']='Insert Data Notes Peminjaman  Gagal';
+            $data['status']='error';
+        }
+        return $data;
+    }
     public function simpanpinjamruang(Request $request,$iduser)
     {
         $pinjam=new Pinjam;

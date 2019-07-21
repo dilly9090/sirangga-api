@@ -59,6 +59,7 @@ Route::post('changepassword/{id}','ApiController@changepassword');
 
 Route::post('login','ApiController@login');
 Route::post('simpanpinjamruang/{iduser}','ApiController@simpanpinjamruang');
+Route::post('simpannotes/{idpinjam}','ApiController@simpannotes');
 
 Route::get('update-pemesanan/{idpinjam}/{status}','ApiController@update_pemesanan');
 

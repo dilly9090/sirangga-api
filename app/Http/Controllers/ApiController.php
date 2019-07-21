@@ -762,6 +762,7 @@ class ApiController extends Controller
         if($request->hasFile('undangan')) {
          
             //get filename with extension
+            $file=$request->file('undangan');
             $filenamewithextension = $request->file('undangan')->getClientOriginalName(); 
             //get filename without extension
             $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
@@ -771,9 +772,10 @@ class ApiController extends Controller
             $filenametostore = $filename.'_'.uniqid().'.'.$extension;
             //Upload File to external server
             $path='sirangga/src/main/resources/uploads/undangan/'.$filenametostore;
-            Storage::disk('sftp')->put($path, fopen($request->file('undangan'), 'r+'));
-            
+            // Storage::disk('sftp')->put($path, fopen($request->file('undangan'), 'r+'));
+            $tujuan_upload='undangan/';
             $pinjam->undangan='undangan/'.$filenametostore;
+            $file->move($tujuan_upload,$filenametostore);
             //Store $filenametostore in the database
         }
         $c=$pinjam->save();
@@ -791,12 +793,12 @@ class ApiController extends Controller
             foreach($d as $k=>$v)
             {
                 $alat=new PinjamAlat;
-                $alat->created_at = date('Y-m-d H:i:s');
-                $alat->updated_at = date('Y-m-d H:i:s');
-                $alat->jumlah = $v['jumlah'];
-                $alat->alat_id = $v['idalat'];
+                // $alat->created_at = date('Y-m-d H:i:s');
+                // $alat->updated_at = date('Y-m-d H:i:s');
+                $alat->jumlah = $v->jumlah;
+                $alat->alat_id = $v->idalat;
                 $alat->pinjam_id = $idpinjam;
-                $alat->keterangan = $v['keterangan'];
+                $alat->keterangan = $v->keterangan;
                 $alat->save();
                 // echo '<br>';
             }
@@ -809,6 +811,7 @@ class ApiController extends Controller
         {
             $data['data']=$pinjam;
             $data['pesan']='Insert Data Peminjaman  Berhasil';
+            $data['alat']=$d;
             $data['status']='success';
 
             $role=User::where('role_id',4)->get();
@@ -835,6 +838,7 @@ class ApiController extends Controller
         {
             $data['data']=array();
             $data['pesan']='Insert Data Peminjaman Gagal';
+            $data['alat']=array();
             $data['status']='error';
         }
         return $data;

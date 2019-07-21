@@ -751,10 +751,10 @@ class ApiController extends Controller
         $pinjam->layout=is_null($request->layout) ? '-' : $request->layout;
         $pinjam->status=is_null($request->status) ? 0 : $request->status;
         $pinjam->undangan=is_null($request->undangan) ? '-' : $request->undangan;
-        $pinjam->pinjam_notes_id=is_null($request->pinjam_notes_id) ? 0 : $request->pinjam_notes_id;
+        $pinjam->pinjam_notes_id=is_null($request->pinjam_notes_id) ? NULL : $request->pinjam_notes_id;
         $pinjam->jumlah_peserta=is_null($request->jumlah_peserta) ? 0 : $request->jumlah_peserta;
-        $pinjam->pengguna_pic_pinjam_id=is_null($request->pengguna_pic_pinjam_id) ? 0 : $request->pengguna_pic_pinjam_id;
-        $pinjam->pinjam_rate_id=is_null($request->pinjam_rate_id) ? 0 : $request->pinjam_rate_id;
+        $pinjam->pengguna_pic_pinjam_id=is_null($request->pengguna_pic_pinjam_id) ? NULL : $request->pengguna_pic_pinjam_id;
+        $pinjam->pinjam_rate_id=is_null($request->pinjam_rate_id) ? NULL : $request->pinjam_rate_id;
         $pinjam->rating=is_null($request->rating) ? false : $request->rating;
         $pinjam->rate=is_null($request->rating) ? 0 : $request->rating;
         $pinjam->pimpinan_rapat=is_null($request->pimpinan_rapat) ? '-' : $request->pimpinan_rapat;

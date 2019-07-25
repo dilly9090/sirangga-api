@@ -767,7 +767,7 @@ class ApiController extends Controller
             $extension = $request->file('lampiran')->getClientOriginalExtension();
             $filenametostore = $filename.'_'.uniqid().'.'.$extension;
             $path='sirangga/src/main/resources/uploads/lampiran/'.$filenametostore;
-            // Storage::disk('sftp')->put($path, fopen($request->file('undangan'), 'r+'));
+            Storage::disk('sftp')->put($path, fopen($request->file('undangan'), 'r+'));
             $tujuan_upload='lampiran/';
             $pinjam->lampiran='lampiran/'.$filenametostore;
             $file->move($tujuan_upload,$filenametostore);
@@ -825,7 +825,7 @@ class ApiController extends Controller
             $filenametostore = $filename.'_'.uniqid().'.'.$extension;
             //Upload File to external server
             $path='sirangga/src/main/resources/uploads/undangan/'.$filenametostore;
-            // Storage::disk('sftp')->put($path, fopen($request->file('undangan'), 'r+'));
+            Storage::disk('sftp')->put($path, fopen($request->file('undangan'), 'r+'));
             $tujuan_upload='undangan/';
             $pinjam->undangan='undangan/'.$filenametostore;
             $file->move($tujuan_upload,$filenametostore);
@@ -1065,13 +1065,14 @@ class ApiController extends Controller
        
         return $data;
     }
-    public function pindah($file)
+    // public function pindah($file)
+    public function pindah()
     {
         $fileContents='Hello World';
-        // Storage::disk('sftp')->put('text.txt', $fileContents);
-        $filepath = public_path($file);
-        // Storage::disk('ftp')->put($dir.'/'.$name, fopen($filepath, 'r+'));
-        $path='sirangga/src/main/resources/uploads/undangan/'.$file;
-        Storage::disk('sftp')->put($path, fopen($filepath, 'r+'));
+        Storage::disk('sftp')->put('text2.txt', $fileContents);
+        // $filepath = public_path($file);
+        // // Storage::disk('ftp')->put($dir.'/'.$name, fopen($filepath, 'r+'));
+        // $path='sirangga/src/main/resources/uploads/undangan/'.$file;
+        // Storage::disk('sftp')->put($path, fopen($filepath, 'r+'));
     }
 }

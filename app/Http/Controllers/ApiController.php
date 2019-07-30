@@ -1065,14 +1065,34 @@ class ApiController extends Controller
        
         return $data;
     }
-    // public function pindah($file)
-    public function pindah()
+    // public function pindah()
+    public function pindah($file)
     {
-        $fileContents='Hello World';
-        Storage::disk('sftp')->put('text2.txt', $fileContents);
+        // $fileContents='Hello World';
+        // Storage::disk('sftp')->put('text2.txt', $fileContents);
         // $filepath = public_path($file);
         // // Storage::disk('ftp')->put($dir.'/'.$name, fopen($filepath, 'r+'));
-        // $path='sirangga/src/main/resources/uploads/undangan/'.$file;
-        // Storage::disk('sftp')->put($path, fopen($filepath, 'r+'));
+        $path='sirangga/src/main/resources/uploads/undangan/'.$file;
+        Storage::disk('sftp')->put($path, fopen($filepath, 'r+'));
+    }
+
+    public function simpan_rate(Request $request,$idpinjam)
+    {
+        $pinjam=Pinjam::find($idpinjam);
+        $rate=new PinjamRate;
+        $rate->rate=$request->rate;
+        $rate->ulasan=$request->ulasan;
+        $rate->pinjam_id=$idpinjam;
+        $c=$rate->save();
+        if($c)
+        {
+        
+            $data['pesan']='Input Rate Berhasil';
+            $data['status']='success';
+        }
+        else{
+            $data['pesan']='Input Rate Gagal';
+            $data['status']='error';           
+        }
     }
 }

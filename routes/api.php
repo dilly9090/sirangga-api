@@ -72,4 +72,5 @@ Route::get('update_notif/{id}','ApiController@update_notif');
 Route::get('delete_by_id/{id}','ApiController@delete_by_id');
 Route::get('delete_all_by_user/{iduser}','ApiController@delete_all_by_user');
 
+Route::post('simpan-rate/{idpinjam}','ApiController@simpan_rate');
 Route::get('readjson','Controller@readjson');

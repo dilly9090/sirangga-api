@@ -1094,5 +1094,7 @@ class ApiController extends Controller
             $data['pesan']='Input Rate Gagal';
             $data['status']='error';           
         }
+
+        return $data;
     }
 }

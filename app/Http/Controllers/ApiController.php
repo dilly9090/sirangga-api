@@ -137,7 +137,7 @@ class ApiController extends Controller
                 $pinj[$x]=$v;
                 $pinj[$x]['mulai']=date('d-m-Y H:i:s',strtotime($v->mulai));
                 $pinj[$x]['selesai']=date('d-m-Y H:i:s',strtotime($v->selesai));
-                $pinj[$x]['rate']=floatval($v->rate);
+                // $pinj[$x]['rate']=floatval($v->rate);
                 $pinjamAlat=PinjamAlat::where('pinjam_id',$v->id)->with('alat')->get();
                 $xx=0;
                 foreach($pinjamAlat as $ka=>$va)

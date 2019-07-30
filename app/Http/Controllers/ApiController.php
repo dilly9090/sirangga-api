@@ -1084,6 +1084,10 @@ class ApiController extends Controller
         $rate->ulasan=$request->ulasan;
         $rate->pinjam_id=$idpinjam;
         $c=$rate->save();
+
+        $pinjam->rate=$request->rate;
+        $pinjam->save();
+        
         if($c)
         {
         

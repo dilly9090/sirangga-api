@@ -1065,6 +1065,7 @@ class ApiController extends Controller
                 $data['pesan']='Update Peminjaman Berhasil';
                 $data['status']='success';
                 $userPeminjam=User::find($pinjam->users_peminjam_id);
+                $pesan='';
                 if($userPeminjam)
                 {
                     if($userPeminjam->token_firebase!='')
@@ -1085,8 +1086,6 @@ class ApiController extends Controller
                             $pesan='Jadwal Pemesanan Ruangan Di Batalkan';
                             $this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
                         }
-                            
-
                     }
                 }
                 $data['pesan2']=$pesan;

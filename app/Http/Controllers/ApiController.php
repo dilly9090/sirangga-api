@@ -890,8 +890,8 @@ class ApiController extends Controller
                 $notif->pinjam_id = $idpinjam;
                 $notif->save();
 
-                if($eselon->token_firebase!='')
-                    $this->sendFCM($title, $pesan, $v->token_firebase);
+                // if($eselon->token_firebase!='')
+                //     $this->sendFCM($title, $pesan, $v->token_firebase);
 
             }
 
@@ -1057,8 +1057,6 @@ class ApiController extends Controller
         }
         if($pinjam)
         {
-            
-
             $pinjam->status=$status;
             $c=$pinjam->save();
             if($c)
@@ -1091,6 +1089,7 @@ class ApiController extends Controller
 
                     }
                 }
+                $data['pesan2']=$pesan;
             }
             else{
                 $data['pesan']='Update Peminjaman Gagal';

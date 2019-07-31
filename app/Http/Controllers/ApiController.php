@@ -882,13 +882,17 @@ class ApiController extends Controller
                 $nama_ruang=($ruang ? $ruang->nama : '');
 
                 $notif=new Notifikasi;
-                $notif->category = 'Pinjam Ruang';
-                $notif->message = 'Pengajuan pinjaman ruang '.$nama_ruang.' oleh '.$nama_eselon.' pada tanggal '.date('d-m-Y',strtotime($mulai)).' s/d '.date('d-m-Y',strtotime($selesai));
+                $notif->category =$title= 'Pinjam Ruang';
+                $notif->message =$pesan= 'Pengajuan pinjaman ruang '.$nama_ruang.' oleh '.$nama_eselon.' pada tanggal '.date('d-m-Y',strtotime($mulai)).' s/d '.date('d-m-Y',strtotime($selesai));
                 $notif->read = false;
                 $notif->title = 'Verifikasi Peminjaman';
                 $notif->user_id = $v->id;
                 $notif->pinjam_id = $idpinjam;
                 $notif->save();
+
+                if($eselon->token_firebase!='')
+                    $this->sendFCM($title, $pesan, $v->token_firebase);
+
             }
 
         }
@@ -1031,9 +1035,6 @@ class ApiController extends Controller
     public function update_pemesanan($idpinjam,$status)
     {
         $pinjam=Pinjam::find($idpinjam);
-        
-        
-
         $us=User::where('role_id',2)->get();
         if($us)
         {
@@ -1045,18 +1046,46 @@ class ApiController extends Controller
         }
         if($pinjam)
         {
+            
+
             $pinjam->status=$status;
             $c=$pinjam->save();
-             if($c)
+            if($c)
             {
-            
+                
                 $data['pesan']='Update Peminjaman Berhasil';
                 $data['status']='success';
+                $userPeminjam=User::find($pinjam->users_peminjam_id);
+                if($userPeminjam)
+                {
+                    if($userPeminjam->token_firebase!='')
+                    {
+                        $title='Informasi Pemesanan Ruangan';
+                        if($status==1)
+                        {
+                            $pesan='Jadwal Pemesanan Ruangan Disetujui';
+                            $this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
+                        }
+                        elseif($status==2)
+                        {
+                            $pesan='Jadwal Pemesanan Ruangan Di Tolak';
+                            $this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
+                        }
+                        elseif($status==3)
+                        {
+                            $pesan='Jadwal Pemesanan Ruangan Di Batalkan';
+                            $this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
+                        }
+                            
+
+                    }
+                }
             }
             else{
                 $data['pesan']='Update Peminjaman Gagal';
                 $data['status']='error';           
             }
+ 
         }
         else
         {
@@ -1090,8 +1119,7 @@ class ApiController extends Controller
         $pinjam->save();
 
         if($c)
-        {
-        
+        {      
             $data['pesan']='Input Rate Berhasil';
             $data['status']='success';
         }
@@ -1101,5 +1129,43 @@ class ApiController extends Controller
         }
 
         return $data;
+    }
+
+    function sendFCM($title, $message, $firebasedevicetoken)
+    {
+        $curl = curl_init();
+        $fields = [
+            "notification" => [
+                "title" => $title,
+                "body" => $message
+            ],
+            "to" => $firebasedevicetoken
+        ];
+        $fields = json_encode ( $fields );
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $fields,
+        CURLOPT_HTTPHEADER => array(
+            "authorization: key=AAAAAsROU-4:APA91bEfAfVd0tIJll9dUfOfvl3WOjblXSB7TfDDxH-Y1NXZI06dlN1gtvWPIzic6xH3na9eCVoZM7Nbe07KQ-MI7-rcIExRwWPrOzmPG-GlCm4-Qj7HRiZgYy-ZjKPlQtSBkEbt_Xqr",
+            "content-type: application/json"
+        ),
+        ));
+        
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        
+        curl_close($curl);
+        
+        if ($err) {
+        echo "cURL Error #:" . $err;
+        } else {
+        echo $response;
+        }
     }
 }

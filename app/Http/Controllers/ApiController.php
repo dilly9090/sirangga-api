@@ -1046,6 +1046,7 @@ class ApiController extends Controller
     public function update_pemesanan($idpinjam,$status)
     {
         $pinjam=Pinjam::find($idpinjam);
+        $users_peminjam_id=$pinjam->users_peminjam_id;
         $us=User::where('role_id',2)->get();
         if($us)
         {
@@ -1064,10 +1065,12 @@ class ApiController extends Controller
                 
                 $data['pesan']='Update Peminjaman Berhasil';
                 $data['status']='success';
-                $userPeminjam=User::find($pinjam->users_peminjam_id);
+                $userPeminjam=User::find($users_peminjam_id);
+                // return $userPeminjam;
                 $pesan='';
                 if($userPeminjam)
                 {
+                    $pesan='-';
                     if($userPeminjam->token_firebase!='')
                     {
                         $title='Informasi Pemesanan Ruangan';
@@ -1089,6 +1092,7 @@ class ApiController extends Controller
                     }
                 }
                 $data['pesan2']=$pesan;
+                $data['status']=$status;
             }
             else{
                 $data['pesan']='Update Peminjaman Gagal';

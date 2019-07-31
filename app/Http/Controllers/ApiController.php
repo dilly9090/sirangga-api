@@ -890,8 +890,10 @@ class ApiController extends Controller
                 $notif->pinjam_id = $idpinjam;
                 $notif->save();
 
-                // if($eselon->token_firebase!='')
-                //     $this->sendFCM($title, $pesan, $v->token_firebase);
+                if($eselon->token_firebase!='')
+                {
+                    $data['hasil'][]=$this->sendFCM($title, $pesan, $v->token_firebase);
+                }
 
             }
 
@@ -1067,7 +1069,7 @@ class ApiController extends Controller
                 $data['status']='success';
                 $userPeminjam=User::find($users_peminjam_id);
                 // return $userPeminjam;
-                $pesan='';
+                $pesan=$hasil='';
                 if($userPeminjam)
                 {
                     $pesan='-';
@@ -1077,21 +1079,21 @@ class ApiController extends Controller
                         if($status==1)
                         {
                             $pesan='Jadwal Pemesanan Ruangan Disetujui';
-                            $this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
+                            $hasil=$this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
                         }
                         elseif($status==2)
                         {
                             $pesan='Jadwal Pemesanan Ruangan Di Tolak';
-                            $this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
+                            $hasil=$this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
                         }
                         elseif($status==3)
                         {
                             $pesan='Jadwal Pemesanan Ruangan Di Batalkan';
-                            $this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
+                            $hasil=$this->sendFCM($title, $pesan, $userPeminjam->token_firebase);
                         }
                     }
                 }
-                $data['pesan2']=$pesan;
+                $data['hasil']=$hasil;
                 $data['status']=$status;
             }
             else{

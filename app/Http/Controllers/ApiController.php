@@ -1177,10 +1177,10 @@ class ApiController extends Controller
         
         curl_close($curl);
         
-        if ($err) {
-        return "cURL Error #:" . $err;
-        } else {
-        return $response;
-        }
+        // if ($err) {
+        // return "cURL Error #:" . $err;
+        // } else {
+        // return $response;
+        // }
     }
 }

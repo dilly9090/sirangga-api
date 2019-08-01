@@ -1131,6 +1131,7 @@ class ApiController extends Controller
         $c=$rate->save();
 
         $pinjam->rate=$request->rate;
+        $pinjam->rating=true;
         $pinjam->save();
 
         if($c)

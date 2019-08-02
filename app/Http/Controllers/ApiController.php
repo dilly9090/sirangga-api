@@ -393,7 +393,8 @@ class ApiController extends Controller
 
     public function pinjam_by_date($date1,$date2)
     {
-        $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->orWhereBetween('selesai', [$date1, $date2])
+                ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
         // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
         if($pinjam->count()!=0)
         {

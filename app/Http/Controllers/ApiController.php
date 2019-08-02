@@ -393,24 +393,44 @@ class ApiController extends Controller
 
     public function pinjam_by_date($date1,$date2)
     {
-        $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->orWhereBetween('selesai', [$date1, $date2])
-                ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        // $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->orWhereBetween('selesai', [$date1, $date2])
+                // ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
         // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
         if($pinjam->count()!=0)
         {
-            $pinj=array();
+            // $pinj=array();
             $x=0;
+            // foreach($pinjam as $k=>$v)
+            // {
+            //     $tgl=strtok($v->mulai,' ');
+            //     $tgl2=strtok($v->selesai,' ');
+
+            //     $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+            //     foreach($period as $pk=>$pv)
+            //     {
+            //         // $pinj[$tgl][]=$v;
+            //         $pinj[$pv][]=$v;
+            //     }
+            // }
+            $pinj=array();
             foreach($pinjam as $k=>$v)
             {
                 $tgl=strtok($v->mulai,' ');
                 $tgl2=strtok($v->selesai,' ');
-
                 $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+                $array_pinj=array();
                 foreach($period as $pk=>$pv)
                 {
-                    // $pinj[$tgl][]=$v;
-                    $pinj[$pv][]=$v;
+                    // $pinj[$pv][]=$v;
+                    $array_pinj[]=$pv;
                 }
+                if(in_array($date1,$array_pinj))
+                    $pinj[$date1][]=$v;
+                
+                if(in_array($date2,$array_pinj))
+                    $pinj[$date2][]=$v;
+
             }
             $pjm=array();
             foreach($pinj as $k=>$v)

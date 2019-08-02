@@ -425,11 +425,18 @@ class ApiController extends Controller
                     // $pinj[$pv][]=$v;
                     $array_pinj[]=$pv;
                 }
-                if(in_array($date1,$array_pinj))
-                    $pinj[$date1][]=$v;
+                // if(in_array($date1,$array_pinj))
+                //     $pinj[$date1][]=$v;
                 
-                if(in_array($date2,$array_pinj))
-                    $pinj[$date2][]=$v;
+                // if(in_array($date2,$array_pinj))
+                //     $pinj[$date2][]=$v;
+
+                $period2=$this->date_range($date1, $date2, "+1 day", "Y-m-d");
+                foreach($period2 as $kk=>$vv)
+                {
+                    if(in_array($vv,$array_pinj))
+                        $pinj[$vv][]=$v;
+                }
 
             }
             $pjm=array();

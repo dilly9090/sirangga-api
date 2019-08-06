@@ -1231,7 +1231,8 @@ class ApiController extends Controller
             "notification" => [
                 "title" => $title,
                 "body" => $message,
-                "icon" => 'http://68.183.180.80/sirangga.png'
+                "icon" => 'https://i.ibb.co/44WXhSX/sirangga.png'
+                // "icon" => 'http://68.183.180.80/sirangga.png'
                 // "icon" => 'http://68.183.180.80/sirangga-jpeg.jpg'
                 // "icon" => 'http://sirangga.dephub.go.id/web/images/logo_bu_kemenhub.png'
             ],

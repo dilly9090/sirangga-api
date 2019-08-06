@@ -1230,7 +1230,8 @@ class ApiController extends Controller
         $fields = [
             "notification" => [
                 "title" => $title,
-                "body" => $message
+                "body" => $message,
+                "icon" => 'http://sirangga.dephub.go.id/web/images/logo_bu_kemenhub.png'
             ],
             "to" => $firebasedevicetoken
         ];

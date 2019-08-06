@@ -275,6 +275,8 @@ class ApiController extends Controller
 
                     $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->with('user')->get();
                     $notes=$lampr='';
+                    $pjm[$x]['event'][$idx]['attachment']['name']='';
+                    $pjm[$x]['event'][$idx]['attachment']['path']='';
                     foreach($pinjamnote as $k=>$v)
                     {
                         if($v->notes!='')
@@ -492,6 +494,8 @@ class ApiController extends Controller
 
                     $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->with('user')->get();
                     $notes=$lampr='';
+                    $pjm[$x]['event'][$idx]['attachment']['name']='';
+                    $pjm[$x]['event'][$idx]['attachment']['path']='';
                     foreach($pinjamnote as $k=>$v)
                     {
                         if($v->notes!='')

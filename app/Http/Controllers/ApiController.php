@@ -1223,8 +1223,49 @@ class ApiController extends Controller
 
         return $data;
     }
-
     function sendFCM($title, $message, $firebasedevicetoken)
+    {
+        $curl = curl_init();
+        $notification = [
+            'title' => $title,
+            'body' => $message,
+            'image' => 'https://i.ibb.co/44WXhSX/sirangga.png'
+        ];
+        $extraNotificationData = ["message" => $notification, "moredata" =>'dd'];
+        $fcmNotification = [
+            //'registration_ids' => $tokenList, //multple token array
+            'to'        => $firebasedevicetoken, //single token
+            'notification' => $notification,
+        ];
+        $fields = json_encode ( $fcmNotification );
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $fields,
+        CURLOPT_HTTPHEADER => array(
+            "Authorization: key=AAAAAsROU-4:APA91bEfAfVd0tIJll9dUfOfvl3WOjblXSB7TfDDxH-Y1NXZI06dlN1gtvWPIzic6xH3na9eCVoZM7Nbe07KQ-MI7-rcIExRwWPrOzmPG-GlCm4-Qj7HRiZgYy-ZjKPlQtSBkEbt_Xqr",
+            "Content-Type: application/json"
+        ),
+        ));
+        
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        
+        curl_close($curl);
+        
+        if ($err) {
+        echo "cURL Error #:" . $err;
+        } else {
+        echo $response;
+        }
+    }
+   
+    function sendFCMOld($title, $message, $firebasedevicetoken)
     {
         $curl = curl_init();
         $fields = [
@@ -1238,6 +1279,8 @@ class ApiController extends Controller
             ],
             "to" => $firebasedevicetoken
         ];
+
+        
         $fields = json_encode ( $fields );
         curl_setopt_array($curl, array(
         CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",

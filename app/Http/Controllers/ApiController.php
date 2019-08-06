@@ -195,8 +195,13 @@ class ApiController extends Controller
     public function pinjam_by_month($month,$year)
     {
         // $pinjam=Pinjam::where('ruang_id',$id)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
-        $pinjam=Pinjam::whereRaw('(month(mulai)='.$month.' OR month(selesai)='.$month.'')
-            ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        // $pinjam=Pinjam::whereRaw('(month(mulai)='.$month.' OR month(selesai)='.$month.'')
+        // $pinjam=Pinjam::whereRaw('EXTRACT(MONTH FROM mulai)','=',$month)
+        $pinjam=Pinjam::whereRaw('extract(month from mulai) = ?', [$month])
+            ->orWhereRaw('extract(month from selesai) = ?', [$month])
+            ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')
+            ->orderBy('mulai','desc')
+            ->orderBy('selesai','desc')->get();
         // return $pinjam;
         if($pinjam->count()!=0)
         {

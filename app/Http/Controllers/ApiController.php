@@ -195,7 +195,8 @@ class ApiController extends Controller
     public function pinjam_by_month($month,$year)
     {
         // $pinjam=Pinjam::where('ruang_id',$id)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
-        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        $pinjam=Pinjam::whereRaw('(month(mulai)='.$month.' OR month(selesai)='.$month.'')
+            ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
         // return $pinjam;
         if($pinjam->count()!=0)
         {
@@ -250,6 +251,7 @@ class ApiController extends Controller
                     $pjm[$x]['event'][$idx]['jumlah_peserta']=$item->jumlah_peserta;
                     $pjm[$x]['event'][$idx]['pimpinan_rapat']=$item->pimpinan_rapat;
                     $pjm[$x]['event'][$idx]['keterangan']=$item->keterangan;
+                    $pjm[$x]['event'][$idx]['lampiran']=$item->undangan;
                     $pjm[$x]['event'][$idx]['satker']=isset($item->peminjam->eselon2->nama) ? $item->peminjam->eselon2->nama : '-';
                     
                     if($item->layout==1)
@@ -266,13 +268,26 @@ class ApiController extends Controller
                         $pjm[$x]['event'][$idx]['tata_letak']='-';
                     // $pjm[$x]['event'][$idx]['notes']=isset($item->pinjamnotes->notes) ? $item->pinjamnotes->notes : '-';
 
-                    $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->get();
-                    $notes='';
+                    $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->with('user')->get();
+                    $notes=$lampr='';
                     foreach($pinjamnote as $k=>$v)
                     {
                         if($v->notes!='')
                             $notes.=$v->notes.'<br>';
+
+                        if($v->lampiran!='' && $v->lampiran!=NULL)
+                        {
+                            $lampr=explode('/',$v->lampiran);
+                            $pjm[$x]['event'][$idx]['attachment']['name']=$lampr[count($lampr)-1];
+                            $pjm[$x]['event'][$idx]['attachment']['path']=$v->lampiran;
+                        }
+                        if($v->pengguna_pic_pinjam_id!='' && $v->pengguna_pic_pinjam_id!=NULL)
+                        {
+                            $pjm[$x]['event'][$idx]['picname']=$v->user->name;
+                        }
                     }
+                    
+                    
                     $pjm[$x]['event'][$idx]['notes']=$notes; 
                     $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
                     if($pinjamalat->count()!=0)
@@ -431,13 +446,13 @@ class ApiController extends Controller
                 // if(in_array($date2,$array_pinj))
                 //     $pinj[$date2][]=$v;
 
-                $period2=$this->date_range($date1, $date2, "+1 day", "Y-m-d");
-                foreach($period2 as $kk=>$vv)
-                {
-                    if(in_array($vv,$array_pinj))
-                        $pinj[$vv][]=$v;
-                }
-
+                
+            }
+            $period2=$this->date_range($date1, $date2, "+1 day", "Y-m-d");
+            foreach($period2 as $kk=>$vv)
+            {
+                if(in_array($vv,$array_pinj))
+                    $pinj[$vv][]=$v;
             }
             $pjm=array();
             foreach($pinj as $k=>$v)
@@ -470,12 +485,23 @@ class ApiController extends Controller
                         $pjm[$x]['event'][$idx]['tata_letak']='-';
                     // $pjm[$x]['event'][$idx]['notes']=isset($item->pinjamnotes->notes) ? $item->pinjamnotes->notes : '-';
 
-                    $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->get();
-                    $notes='';
+                    $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->with('user')->get();
+                    $notes=$lampr='';
                     foreach($pinjamnote as $k=>$v)
                     {
                         if($v->notes!='')
                             $notes.=$v->notes.'<br>';
+
+                        if($v->lampiran!='' && $v->lampiran!=NULL)
+                        {
+                            $lampr=explode('/',$v->lampiran);
+                            $pjm[$x]['event'][$idx]['attachment']['name']=$lampr[count($lampr)-1];
+                            $pjm[$x]['event'][$idx]['attachment']['path']=$v->lampiran;
+                        }
+                        if($v->pengguna_pic_pinjam_id!='' && $v->pengguna_pic_pinjam_id!=NULL)
+                        {
+                            $pjm[$x]['event'][$idx]['picname']=$v->user->name;
+                        }
                     }
                     $pjm[$x]['event'][$idx]['notes']=$notes; 
                     $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();

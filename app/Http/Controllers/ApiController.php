@@ -436,16 +436,18 @@ class ApiController extends Controller
             //     }
             // }
             $pinj=array();
+            $array_pinj=array();
             foreach($pinjam as $k=>$v)
             {
                 $tgl=strtok($v->mulai,' ');
                 $tgl2=strtok($v->selesai,' ');
                 $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
-                $array_pinj=array();
+                
                 foreach($period as $pk=>$pv)
                 {
                     // $pinj[$pv][]=$v;
                     $array_pinj[]=$pv;
+                    // echo $pv."\n";
                 }
                 // if(in_array($date1,$array_pinj))
                 //     $pinj[$date1][]=$v;
@@ -455,12 +457,14 @@ class ApiController extends Controller
 
                 
             }
+            // return $array_pinj;
             $period2=$this->date_range($date1, $date2, "+1 day", "Y-m-d");
             foreach($period2 as $kk=>$vv)
             {
                 if(in_array($vv,$array_pinj))
                     $pinj[$vv][]=$v;
             }
+
             $pjm=array();
             foreach($pinj as $k=>$v)
             {

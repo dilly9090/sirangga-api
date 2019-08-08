@@ -32,6 +32,7 @@ Route::get('jadwal-by-month/{month}/{year}','ApiController@pinjam_by_month');
 Route::get('jadwal-by-date/{date1}/{date2}','ApiController@pinjam_by_date');
 
 Route::get('jadwal-by-status/{iduser}/{status}','ApiController@jadwal_by_status');
+Route::get('jadwal-all-manager','ApiController@jadwal_all_manager');
 
 Route::get('cekjadwal-by-date/{date}/{time}/{idruang}','ApiController@getbydate');
 
@@ -68,6 +69,8 @@ Route::get('list_notif_by_user/{id}','ApiController@list_notif_by_user');
 
 Route::post('insert_notif','ApiController@insert_notif');
 Route::get('update_notif/{id}','ApiController@update_notif');
+
+Route::get('getcountnotif/{iduser}','ApiController@getcountnotif');
 
 Route::get('delete_by_id/{id}','ApiController@delete_by_id');
 Route::get('delete_all_by_user/{iduser}','ApiController@delete_all_by_user');

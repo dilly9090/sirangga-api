@@ -386,6 +386,32 @@ class ApiController extends Controller
         return $data;
     }
 
+    public function jadwal_all_manager()
+    {
+        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->get();
+        if($pinjam->count()!=0)
+        {
+            $pinj=array();
+            $x=0;
+            foreach($pinjam as $k=>$v)
+            {
+                $pinj[$x]=$v;
+                $pinj[$x]['mulai']=date('d-m-Y H:i:s',strtotime($v->mulai));
+                $pinj[$x]['selesai']=date('d-m-Y H:i:s',strtotime($v->selesai));
+                $x++;
+            }
+            $data['data']=$pinj;
+            // $data['pinjam']=$pinjam;
+            $data['status']='success';
+            
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
     public function jadwal_by_status($iduser,$status)
     {
         $pinjam=Pinjam::where('users_peminjam_id',$iduser)->where('status',$status)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
@@ -1311,5 +1337,11 @@ class ApiController extends Controller
         // } else {
         // return $response;
         // }
+    }
+
+    public function getcountnotif($iduser)
+    {
+        $notif=Notifikasi::where('user_id',$iduser)->where('read','=',false)->get();
+        return $notif->count();
     }
 }

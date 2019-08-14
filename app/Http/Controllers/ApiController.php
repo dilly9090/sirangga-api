@@ -833,11 +833,15 @@ class ApiController extends Controller
 
                 $data['data']=$us;
                 $data['status']='success';
+
+                $notif=Notifikasi::where('user_id',$us->id)->where('read','=',false)->get();
+                $data['notifcount']=$notif->count();
             } 
             else 
             {
                 $data['data']=array();
                 $data['status']='error';
+                $data['notifcount']=0;
             }
             
         }
@@ -845,6 +849,7 @@ class ApiController extends Controller
         {
             $data['data']=array();
             $data['status']='error';
+            $data['notifcount']=0;
         }
 
         return $data;

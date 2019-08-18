@@ -484,7 +484,7 @@ class ApiController extends Controller
                 {
                     // $pinj[$pv][]=$v;
                     if(in_array($pv,$pinj2))
-                        $pinj[$pv]=$v;
+                        $pinj[$pv][]=$v;
                         // $array_pinj[]=$pv;
                     // echo $pv."\n";
                 }
@@ -497,7 +497,7 @@ class ApiController extends Controller
                 
             }
             // rsort($pinj);
-            // return $pinj;
+            return $pinj;
             
 
             $x=0;

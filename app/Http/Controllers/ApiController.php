@@ -466,8 +466,14 @@ class ApiController extends Controller
             // $pinj=array();
             $x=0;
           
-            $pinj=array();
+            $pinj=$pinj2=array();
             $array_pinj=array();
+            $period2=$this->date_range($date1, $date2, "+1 day", "Y-m-d");
+            foreach($period2 as $kk=>$vv)
+            {
+                // if(in_array($vv,$array_pinj))
+                    $pinj2[]=$vv;
+            }
             foreach($pinjam as $k=>$v)
             {
                 $tgl=strtok($v->mulai,' ');
@@ -477,7 +483,9 @@ class ApiController extends Controller
                 foreach($period as $pk=>$pv)
                 {
                     // $pinj[$pv][]=$v;
-                    $array_pinj[]=$pv;
+                    if(in_array($pv,$pinj2))
+                        $pinj[$pv]=$v;
+                        // $array_pinj[]=$pv;
                     // echo $pv."\n";
                 }
                 // if(in_array($date1,$array_pinj))
@@ -486,14 +494,9 @@ class ApiController extends Controller
                 // if(in_array($date2,$array_pinj))
                 //     $pinj[$date2][]=$v;
 
-                $period2=$this->date_range($date1, $date2, "+1 day", "Y-m-d");
-                foreach($period2 as $kk=>$vv)
-                {
-                    if(in_array($vv,$array_pinj))
-                        $pinj[$vv][]=$v;
-                }
+                
             }
-            // sort($array_pinj);
+            // rsort($pinj);
             // return $pinj;
             
 

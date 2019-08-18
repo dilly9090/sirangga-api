@@ -247,6 +247,7 @@ class ApiController extends Controller
                     $sl=explode(' ',$item->selesai);
                     $mul=explode(' ',$item->mulai);
                     $pjm[$x]['event'][$idx]['id']=$item->id;
+                    $pjm[$x]['event'][$idx]['created_at']=date('Y-m-d H:i:s',strtotime($item->created_at));
                     $pjm[$x]['event'][$idx]['name']=$item->topik;
                     $pjm[$x]['event'][$idx]['waktu_mulai']=$mul[1];
                     $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
@@ -455,26 +456,16 @@ class ApiController extends Controller
 
     public function pinjam_by_date($date1,$date2)
     {
-        // $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->orWhereBetween('selesai', [$date1, $date2])
-                // ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->orWhereBetween('selesai', [$date1, $date2])
+                ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
         // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
-        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        // return $pinjam;
         if($pinjam->count()!=0)
         {
             // $pinj=array();
             $x=0;
-            // foreach($pinjam as $k=>$v)
-            // {
-            //     $tgl=strtok($v->mulai,' ');
-            //     $tgl2=strtok($v->selesai,' ');
-
-            //     $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
-            //     foreach($period as $pk=>$pv)
-            //     {
-            //         // $pinj[$tgl][]=$v;
-            //         $pinj[$pv][]=$v;
-            //     }
-            // }
+          
             $pinj=array();
             $array_pinj=array();
             foreach($pinjam as $k=>$v)
@@ -495,16 +486,18 @@ class ApiController extends Controller
                 // if(in_array($date2,$array_pinj))
                 //     $pinj[$date2][]=$v;
 
-                
+                $period2=$this->date_range($date1, $date2, "+1 day", "Y-m-d");
+                foreach($period2 as $kk=>$vv)
+                {
+                    if(in_array($vv,$array_pinj))
+                        $pinj[$vv][]=$v;
+                }
             }
-            // return $array_pinj;
-            $period2=$this->date_range($date1, $date2, "+1 day", "Y-m-d");
-            foreach($period2 as $kk=>$vv)
-            {
-                if(in_array($vv,$array_pinj))
-                    $pinj[$vv][]=$v;
-            }
+            // sort($array_pinj);
+            // return $pinj;
+            
 
+            $x=0;
             $pjm=array();
             foreach($pinj as $k=>$v)
             {
@@ -515,11 +508,17 @@ class ApiController extends Controller
                     $sl=explode(' ',$item->selesai);
                     $mul=explode(' ',$item->mulai);
                     $pjm[$x]['event'][$idx]['id']=$item->id;
+                    $pjm[$x]['event'][$idx]['created_at']=date('Y-m-d H:i:s',strtotime($item->created_at));
                     $pjm[$x]['event'][$idx]['name']=$item->topik;
                     $pjm[$x]['event'][$idx]['waktu_mulai']=$mul[1];
                     $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
                     $pjm[$x]['event'][$idx]['tgl_selesai']=date('d-m-Y',strtotime(trim(strtok($item->selesai,' '))));
                     $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
+                    $pjm[$x]['event'][$idx]['agenda']=$item->topik;
+                    $pjm[$x]['event'][$idx]['jumlah_peserta']=$item->jumlah_peserta;
+                    $pjm[$x]['event'][$idx]['pimpinan_rapat']=$item->pimpinan_rapat;
+                    $pjm[$x]['event'][$idx]['keterangan']=$item->keterangan;
+                    $pjm[$x]['event'][$idx]['lampiran']=$item->undangan;
                     $pjm[$x]['event'][$idx]['satker']=isset($item->peminjam->eselon2->nama) ? $item->peminjam->eselon2->nama : '-';
                     
                     if($item->layout==1)
@@ -556,6 +555,8 @@ class ApiController extends Controller
                             $pjm[$x]['event'][$idx]['picname']=$v->user->name;
                         }
                     }
+                    
+                    
                     $pjm[$x]['event'][$idx]['notes']=$notes; 
                     $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
                     if($pinjamalat->count()!=0)
@@ -568,6 +569,8 @@ class ApiController extends Controller
                     }
                     else
                         $pjm[$x]['event'][$idx]['pinjam_alat']=array();
+                    // $pjm[$x]['event'][$idx]['pinjam_alat']=isset($item->pinjamalat->id) ? $item->pinjamalat->id : '-';
+                    // $pjm[$x]['event'][$idx]['satker']=$item->peminjam->id;
                     $idx++;
                 }
                 $x++;

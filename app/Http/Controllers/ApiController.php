@@ -143,7 +143,10 @@ class ApiController extends Controller
                 $xx=0;
                 foreach($pinjamAlat as $ka=>$va)
                 {
-                    $cr_at=Carbon\Carbon::createFromFormat('d-m-Y H:i:s', $date);
+                    list($d1,$d2)=explode('.',$va->created_at);
+                    list($t1,$t2)=explode(' ',$d1);
+                    list($th,$bl,$tg)=explode('-',$t1);
+                    $cr_at=$tg.'-'.$bl.'-'.$th;
                     $pinj[$x]['pinjamalat'][$xx]['id']=$va->id;
                     $pinj[$x]['pinjamalat'][$xx]['created_at']=$cr_at;
                     $pinj[$x]['pinjamalat'][$xx]['updated_at']=$va->updated_at;

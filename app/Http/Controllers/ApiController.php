@@ -149,7 +149,7 @@ class ApiController extends Controller
                     list($th,$bl,$tg)=explode('-',$t1);
                     $cr_at=$tg.'-'.$bl.'-'.$th;
                     $pinj[$x]['pinjamalat'][$xx]['id']=$va->id;
-                    $pinj[$x]['pinjamalat'][$xx]['created_at']=$cr_at;
+                    $pinj[$x]['pinjamalat'][$xx]['created_at']=$va->created_at;
                     $pinj[$x]['pinjamalat'][$xx]['updated_at']=$va->updated_at;
                     $pinj[$x]['pinjamalat'][$xx]['jumlah']=$va->jumlah;
                     $pinj[$x]['pinjamalat'][$xx]['alat_id']=$va->alat_id;

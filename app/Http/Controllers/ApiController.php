@@ -402,6 +402,7 @@ class ApiController extends Controller
                 $pinj[$x]=$v;
                 $pinj[$x]['mulai']=date('d-m-Y H:i:s',strtotime($v->mulai));
                 $pinj[$x]['selesai']=date('d-m-Y H:i:s',strtotime($v->selesai));
+                $pinj[$x]['satker']=isset($v->peminjam->eselon2->nama) ? $v->peminjam->eselon2->nama : '-';
                 $x++;
             }
             $data['data']=$pinj;
@@ -442,6 +443,7 @@ class ApiController extends Controller
                 $pinj[$x]=$v;
                 $pinj[$x]['mulai']=date('d-m-Y H:i:s',strtotime($v->mulai));
                 $pinj[$x]['selesai']=date('d-m-Y H:i:s',strtotime($v->selesai));
+                $pinj[$x]['satker']=isset($v->peminjam->eselon2->nama) ? $v->peminjam->eselon2->nama : '-';
                 $x++;
             }
             $data['data']=$pinj;

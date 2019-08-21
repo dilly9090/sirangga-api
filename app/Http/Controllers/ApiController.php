@@ -389,7 +389,8 @@ class ApiController extends Controller
 
     public function jadwal_all_manager()
     {
-        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->get();
+        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('created_at','desc')->get();
+        // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->get();
         if($pinjam->count()!=0)
         {
             $pinj=array();

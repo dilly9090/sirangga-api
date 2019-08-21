@@ -144,7 +144,7 @@ class ApiController extends Controller
                 foreach($pinjamAlat as $ka=>$va)
                 {
                     $pinj[$x]['pinjamalat'][$xx]['id']=$va->id;
-                    $pinj[$x]['pinjamalat'][$xx]['created_at']=date('d-m-Y',strtotime($va->created_at));
+                    $pinj[$x]['pinjamalat'][$xx]['created_at']=date('d-m-Y H:i:s',strtotime($va->created_at));
                     $pinj[$x]['pinjamalat'][$xx]['updated_at']=$va->updated_at;
                     $pinj[$x]['pinjamalat'][$xx]['jumlah']=$va->jumlah;
                     $pinj[$x]['pinjamalat'][$xx]['alat_id']=$va->alat_id;

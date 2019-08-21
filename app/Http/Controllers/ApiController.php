@@ -143,7 +143,8 @@ class ApiController extends Controller
                 $xx=0;
                 foreach($pinjamAlat as $ka=>$va)
                 {
-                    list($d1,$d2)=explode('.',$va->created_at);
+                    // list($d1,$d2)=explode('.',$va->created_at);
+                    $d1=strtok($va->created_at,'.');
                     list($t1,$t2)=explode(' ',$d1);
                     list($th,$bl,$tg)=explode('-',$t1);
                     $cr_at=$tg.'-'.$bl.'-'.$th;

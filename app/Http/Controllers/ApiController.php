@@ -401,6 +401,7 @@ class ApiController extends Controller
     {
         $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('created_at','desc')->get();
         // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->get();
+        // return $pinjam;
         if($pinjam->count()!=0)
         {
             $pinj=array();
@@ -414,27 +415,22 @@ class ApiController extends Controller
 
                 $pinjamAlat=PinjamAlat::where('pinjam_id',$v->id)->with('alat')->get();
                 $xx=0;
-                if($pinjamAlat->count()!=0)
+                foreach($pinjamAlat as $ka=>$va)
                 {
-                    foreach($pinjamAlat as $ka=>$va)
-                    {
-                        $pinj[$x]['pinjamalat'][$xx]['id']=$va->id;
-                        $pinj[$x]['pinjamalat'][$xx]['created_at']=$va->created_at;
-                        $pinj[$x]['pinjamalat'][$xx]['updated_at']=$va->updated_at;
-                        $pinj[$x]['pinjamalat'][$xx]['jumlah']=$va->jumlah;
-                        $pinj[$x]['pinjamalat'][$xx]['alat_id']=$va->alat_id;
-                        $pinj[$x]['pinjamalat'][$xx]['pinjam_id']=$va->pinjam_id;
-                        $pinj[$x]['pinjamalat'][$xx]['keterangan']=$va->keterangan;
-                        $pinj[$x]['pinjamalat'][$xx]['nama']=$va->alat->nama;
-                        $pinj[$x]['pinjamalat'][$xx]['kapasitas']=$va->alat->kapasitas;
+                    $pinj[$x]['pinjamalat'][$xx]['id']=$va->id;
+                    $pinj[$x]['pinjamalat'][$xx]['created_at']=$va->created_at;
+                    $pinj[$x]['pinjamalat'][$xx]['updated_at']=$va->updated_at;
+                    $pinj[$x]['pinjamalat'][$xx]['jumlah']=$va->jumlah;
+                    $pinj[$x]['pinjamalat'][$xx]['alat_id']=$va->alat_id;
+                    $pinj[$x]['pinjamalat'][$xx]['pinjam_id']=$va->pinjam_id;
+                    $pinj[$x]['pinjamalat'][$xx]['keterangan']=$va->keterangan;
+                    $pinj[$x]['pinjamalat'][$xx]['nama']=$va->alat->nama;
+                    $pinj[$x]['pinjamalat'][$xx]['kapasitas']=$va->alat->kapasitas;
 
-                        $pinj[$x]['pinjam_alat'][$xx][]=$va->alat->nama; 
-
-                        $xx++;
-                    }
+                    
+                    $xx++;
                 }
-                else
-                    $pinj[$x]['pinjam_alat']=array();
+                
 
                 $x++;
             }

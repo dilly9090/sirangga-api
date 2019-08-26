@@ -421,19 +421,20 @@ class ApiController extends Controller
                 foreach($pinjamAlat as $ka=>$va)
                 {
                     // $pinj[$x]['pinjamalat'][$xx][]=$va->alat->nama;
-                    $pinj[$x]['pinjamalat'][$xx]['id']=$va->id;
-                    $pinj[$x]['pinjamalat'][$xx]['created_at']=$va->created_at;
-                    $pinj[$x]['pinjamalat'][$xx]['updated_at']=$va->updated_at;
-                    $pinj[$x]['pinjamalat'][$xx]['jumlah']=$va->jumlah;
-                    $pinj[$x]['pinjamalat'][$xx]['alat_id']=$va->alat_id;
-                    $pinj[$x]['pinjamalat'][$xx]['pinjam_id']=$va->pinjam_id;
-                    $pinj[$x]['pinjamalat'][$xx]['keterangan']=$va->keterangan;
-                    $pinj[$x]['pinjamalat'][$xx]['nama']=$va->alat->nama;
-                    $pinj[$x]['pinjamalat'][$xx]['kapasitas']=$va->alat->kapasitas;
+                    // $pinj[$x]['pinjamalat'][$xx]['id']=$va->id;
+                    // $pinj[$x]['pinjamalat'][$xx]['created_at']=$va->created_at;
+                    // $pinj[$x]['pinjamalat'][$xx]['updated_at']=$va->updated_at;
+                    // $pinj[$x]['pinjamalat'][$xx]['jumlah']=$va->jumlah;
+                    // $pinj[$x]['pinjamalat'][$xx]['alat_id']=$va->alat_id;
+                    // $pinj[$x]['pinjamalat'][$xx]['pinjam_id']=$va->pinjam_id;
+                    // $pinj[$x]['pinjamalat'][$xx]['keterangan']=$va->keterangan;
+                    // $pinj[$x]['pinjamalat'][$xx]['nama']=$va->alat->nama;
+                    // $pinj[$x]['pinjamalat'][$xx]['kapasitas']=$va->alat->kapasitas;
                     $pinjAl[]=$va->alat->nama;
                     $xx++;
                 }
                 
+                $pinj[$x]['pinjamalat']=$pinjAl;
                 $pinj[$x]['pinjam_alat']=$pinjAl;
                 $x++;
             }

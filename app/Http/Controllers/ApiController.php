@@ -231,19 +231,19 @@ class ApiController extends Controller
                         // $pinj[]=$v;
                     }
                     
-                    list($thn,$bln,$tgl)=explode('-',strtok($v->selesai,' '));
-                    if((int)$bln==$month && $year==$thn)
-                    {
-                        $tgl=strtok($v->mulai,' ');
-                        $tgl2=strtok($v->selesai,' ');
-                        $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
-                        foreach($period as $pk=>$pv)
-                        {
-                            // $pinj[$tgl][]=$v;
-                            $pinj[$pv][]=$v;
-                        }
-                        // $pinj[]=$v;
-                    }
+                    // list($thn,$bln,$tgl)=explode('-',strtok($v->selesai,' '));
+                    // if((int)$bln==$month && $year==$thn)
+                    // {
+                    //     $tgl=strtok($v->mulai,' ');
+                    //     $tgl2=strtok($v->selesai,' ');
+                    //     $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+                    //     foreach($period as $pk=>$pv)
+                    //     {
+                    //         // $pinj[$tgl][]=$v;
+                    //         $pinj[$pv][]=$v;
+                    //     }
+                    //     // $pinj[]=$v;
+                    // }
                 }
             }
             $x=0;

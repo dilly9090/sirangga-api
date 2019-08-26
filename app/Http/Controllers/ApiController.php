@@ -417,7 +417,7 @@ class ApiController extends Controller
                 $pinjamAlat=PinjamAlat::where('pinjam_id',$v->id)->with('alat')->get();
                 
                 $xx=0;
-                $pinjAl=array();
+                // $pinjAl=array();
                 foreach($pinjamAlat as $ka=>$va)
                 {
                     // $pinj[$x]['pinjamalat'][$xx][]=$va->alat->nama;
@@ -430,11 +430,11 @@ class ApiController extends Controller
                     $pinj[$x]['pinjamalat'][$xx]['keterangan']=$va->keterangan;
                     $pinj[$x]['pinjamalat'][$xx]['nama']=$va->alat->nama;
                     $pinj[$x]['pinjamalat'][$xx]['kapasitas']=$va->alat->kapasitas;
-                    $pinjAl[]=$va->alat->nama;
+                    // $pinjAl[]=$va->alat->nama;
                     $xx++;
                 }
                 
-                $pinj[$x]['pinjam_alat']=$pinjAl;
+                // $pinj[$x]['pinjam_alat']=$pinjAl;
                 $x++;
             }
             $data['data']=$pinj;

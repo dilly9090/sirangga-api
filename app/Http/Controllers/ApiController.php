@@ -399,7 +399,7 @@ class ApiController extends Controller
 
     public function jadwal_all_manager()
     {
-        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('created_at','desc')->get();
+        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->orderBy('created_at','desc')->get();
         // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->get();
         // return $pinjam;
         if($pinjam->count()!=0)
@@ -408,15 +408,19 @@ class ApiController extends Controller
             $x=0;
             foreach($pinjam as $k=>$v)
             {
+                
                 $pinj[$x]=$v;
                 $pinj[$x]['mulai']=date('d-m-Y H:i:s',strtotime($v->mulai));
                 $pinj[$x]['selesai']=date('d-m-Y H:i:s',strtotime($v->selesai));
                 $pinj[$x]['satker']=isset($v->peminjam->eselon2->nama) ? $v->peminjam->eselon2->nama : '-';
-
+                
                 $pinjamAlat=PinjamAlat::where('pinjam_id',$v->id)->with('alat')->get();
+                
                 $xx=0;
+                $pinjAl=array();
                 foreach($pinjamAlat as $ka=>$va)
                 {
+                    // $pinj[$x]['pinjamalat'][$xx][]=$va->alat->nama;
                     $pinj[$x]['pinjamalat'][$xx]['id']=$va->id;
                     $pinj[$x]['pinjamalat'][$xx]['created_at']=$va->created_at;
                     $pinj[$x]['pinjamalat'][$xx]['updated_at']=$va->updated_at;
@@ -426,12 +430,11 @@ class ApiController extends Controller
                     $pinj[$x]['pinjamalat'][$xx]['keterangan']=$va->keterangan;
                     $pinj[$x]['pinjamalat'][$xx]['nama']=$va->alat->nama;
                     $pinj[$x]['pinjamalat'][$xx]['kapasitas']=$va->alat->kapasitas;
-
-                    
+                    $pinjAl[]=$va->alat->nama;
                     $xx++;
                 }
                 
-
+                $pinj[$x]['pinjam_alat']=$pinjAl;
                 $x++;
             }
             $data['data']=$pinj;

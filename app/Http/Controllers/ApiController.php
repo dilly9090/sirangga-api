@@ -334,6 +334,142 @@ class ApiController extends Controller
         }
         return $data;
     }
+
+    public function pinjam_by_month_lazy($month,$year,$offset)
+    {
+        $pinjam=Pinjam::whereRaw('extract(month from mulai) < ?', [$month])
+            ->orWhereRaw('extract(month from selesai) < ?', [$month])
+            ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')
+            ->orderBy('mulai','desc')
+            ->offset($offset)
+            ->limit(10)
+            ->get();
+        // return $pinjam;
+        if($pinjam->count()!=0)
+        {
+            $pinj=array();
+            foreach($pinjam as $k=>$v)
+            {
+                if($v->status==1)
+                {
+                    list($thn,$bln,$tgl)=explode('-',strtok($v->mulai,' '));
+                    // if((int)$bln==$month && $year==$thn)
+                    // {
+                        $tgl=strtok($v->mulai,' ');
+                        $tgl2=strtok($v->selesai,' ');
+                        $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+                        foreach($period as $pk=>$pv)
+                        {
+                            // $pinj[$tgl][]=$v;
+                            $pinj[$pv][]=$v;
+                        }
+                        // $pinj[]=$v;
+                    // }
+                    
+                    // list($thn,$bln,$tgl)=explode('-',strtok($v->selesai,' '));
+                    // if((int)$bln==$month && $year==$thn)
+                    // {
+                    //     $tgl=strtok($v->mulai,' ');
+                    //     $tgl2=strtok($v->selesai,' ');
+                    //     $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+                    //     foreach($period as $pk=>$pv)
+                    //     {
+                    //         // $pinj[$tgl][]=$v;
+                    //         $pinj[$pv][]=$v;
+                    //     }
+                    //     // $pinj[]=$v;
+                    // }
+                }
+            }
+            krsort($pinj);
+            $x=0;
+            $pjm=array();
+            foreach($pinj as $k=>$v)
+            {
+                $pjm[$x]['date']=$k;
+                $idx=0;
+                foreach($v as $kk=>$item)
+                {
+                    $sl=explode(' ',$item->selesai);
+                    $mul=explode(' ',$item->mulai);
+                    $pjm[$x]['event'][$idx]['id']=$item->id;
+                    $pjm[$x]['event'][$idx]['created_at']=date('Y-m-d H:i:s',strtotime($item->created_at));
+                    $pjm[$x]['event'][$idx]['name']=$item->topik;
+                    $pjm[$x]['event'][$idx]['waktu_mulai']=$mul[1];
+                    $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
+                    $pjm[$x]['event'][$idx]['tgl_selesai']=date('d-m-Y',strtotime(trim(strtok($item->selesai,' '))));
+                    $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
+                    $pjm[$x]['event'][$idx]['agenda']=$item->topik;
+                    $pjm[$x]['event'][$idx]['jumlah_peserta']=$item->jumlah_peserta;
+                    $pjm[$x]['event'][$idx]['pimpinan_rapat']=$item->pimpinan_rapat;
+                    $pjm[$x]['event'][$idx]['keterangan']=$item->keterangan;
+                    $pjm[$x]['event'][$idx]['lampiran']=$item->undangan;
+                    $pjm[$x]['event'][$idx]['satker']=isset($item->peminjam->eselon2->nama) ? $item->peminjam->eselon2->nama : '-';
+                    
+                    if($item->layout==1)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Class Room';
+                    elseif($item->layout==2)
+                        $pjm[$x]['event'][$idx]['tata_letak']='U Shape';
+                    elseif($item->layout==3)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Theater';
+                    elseif($item->layout==4)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Upacara';
+                    elseif($item->layout==5)
+                        $pjm[$x]['event'][$idx]['tata_letak']='Lainnya';
+                    else
+                        $pjm[$x]['event'][$idx]['tata_letak']='-';
+                    // $pjm[$x]['event'][$idx]['notes']=isset($item->pinjamnotes->notes) ? $item->pinjamnotes->notes : '-';
+
+                    $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->with('user')->get();
+                    $notes=$lampr='';
+                    $pjm[$x]['event'][$idx]['attachment']['name']='';
+                    $pjm[$x]['event'][$idx]['attachment']['path']='';
+                    foreach($pinjamnote as $k=>$v)
+                    {
+                        if($v->notes!='')
+                            $notes.=$v->notes.'<br>';
+
+                        if($v->lampiran!='' && $v->lampiran!=NULL)
+                        {
+                            $lampr=explode('/',$v->lampiran);
+                            $pjm[$x]['event'][$idx]['attachment']['name']=$lampr[count($lampr)-1];
+                            $pjm[$x]['event'][$idx]['attachment']['path']=$v->lampiran;
+                        }
+                        if($v->pengguna_pic_pinjam_id!='' && $v->pengguna_pic_pinjam_id!=NULL)
+                        {
+                            $pjm[$x]['event'][$idx]['picname']=$v->user->name;
+                        }
+                    }
+                    
+                    
+                    $pjm[$x]['event'][$idx]['notes']=$notes; 
+                    $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
+                    if($pinjamalat->count()!=0)
+                    {
+
+                        foreach($pinjamalat as $k=>$v)
+                        {
+                           $pjm[$x]['event'][$idx]['pinjam_alat'][]=$v->alat->nama; 
+                        }
+                    }
+                    else
+                        $pjm[$x]['event'][$idx]['pinjam_alat']=array();
+                    // $pjm[$x]['event'][$idx]['pinjam_alat']=isset($item->pinjamalat->id) ? $item->pinjamalat->id : '-';
+                    // $pjm[$x]['event'][$idx]['satker']=$item->peminjam->id;
+                    $idx++;
+                }
+                $x++;
+            }
+            $data['data']=$pjm;
+            $data['status']='success';
+        }
+        else
+        {
+            $data['data']=array();
+            $data['status']='error';
+        }
+        return $data;
+    }
     public function getbydate($date,$time,$idruang)
     {
         $datetime=strtotime($date.' '.$time);

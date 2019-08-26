@@ -388,75 +388,80 @@ class ApiController extends Controller
             {
                 $pjm[$x]['date']=$k;
                 $idx=0;
-                foreach($v as $kk=>$item)
+                list($dthn,$dbln,$dtgl)=explode('-',$k);
+                
+                if($dbln<$month && $dthn==$year)
                 {
-                    $sl=explode(' ',$item->selesai);
-                    $mul=explode(' ',$item->mulai);
-                    $pjm[$x]['event'][$idx]['id']=$item->id;
-                    $pjm[$x]['event'][$idx]['created_at']=date('Y-m-d H:i:s',strtotime($item->created_at));
-                    $pjm[$x]['event'][$idx]['name']=$item->topik;
-                    $pjm[$x]['event'][$idx]['waktu_mulai']=$mul[1];
-                    $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
-                    $pjm[$x]['event'][$idx]['tgl_selesai']=date('d-m-Y',strtotime(trim(strtok($item->selesai,' '))));
-                    $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
-                    $pjm[$x]['event'][$idx]['agenda']=$item->topik;
-                    $pjm[$x]['event'][$idx]['jumlah_peserta']=$item->jumlah_peserta;
-                    $pjm[$x]['event'][$idx]['pimpinan_rapat']=$item->pimpinan_rapat;
-                    $pjm[$x]['event'][$idx]['keterangan']=$item->keterangan;
-                    $pjm[$x]['event'][$idx]['lampiran']=$item->undangan;
-                    $pjm[$x]['event'][$idx]['satker']=isset($item->peminjam->eselon2->nama) ? $item->peminjam->eselon2->nama : '-';
-                    
-                    if($item->layout==1)
-                        $pjm[$x]['event'][$idx]['tata_letak']='Class Room';
-                    elseif($item->layout==2)
-                        $pjm[$x]['event'][$idx]['tata_letak']='U Shape';
-                    elseif($item->layout==3)
-                        $pjm[$x]['event'][$idx]['tata_letak']='Theater';
-                    elseif($item->layout==4)
-                        $pjm[$x]['event'][$idx]['tata_letak']='Upacara';
-                    elseif($item->layout==5)
-                        $pjm[$x]['event'][$idx]['tata_letak']='Lainnya';
-                    else
-                        $pjm[$x]['event'][$idx]['tata_letak']='-';
-                    // $pjm[$x]['event'][$idx]['notes']=isset($item->pinjamnotes->notes) ? $item->pinjamnotes->notes : '-';
-
-                    $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->with('user')->get();
-                    $notes=$lampr='';
-                    $pjm[$x]['event'][$idx]['attachment']['name']='';
-                    $pjm[$x]['event'][$idx]['attachment']['path']='';
-                    foreach($pinjamnote as $k=>$v)
+                    foreach($v as $kk=>$item)
                     {
-                        if($v->notes!='')
-                            $notes.=$v->notes.'<br>';
+                        $sl=explode(' ',$item->selesai);
+                        $mul=explode(' ',$item->mulai);
+                        $pjm[$x]['event'][$idx]['id']=$item->id;
+                        $pjm[$x]['event'][$idx]['created_at']=date('Y-m-d H:i:s',strtotime($item->created_at));
+                        $pjm[$x]['event'][$idx]['name']=$item->topik;
+                        $pjm[$x]['event'][$idx]['waktu_mulai']=$mul[1];
+                        $pjm[$x]['event'][$idx]['waktu_selesai']=$sl[1];
+                        $pjm[$x]['event'][$idx]['tgl_selesai']=date('d-m-Y',strtotime(trim(strtok($item->selesai,' '))));
+                        $pjm[$x]['event'][$idx]['ruang']=$item->ruang->nama;
+                        $pjm[$x]['event'][$idx]['agenda']=$item->topik;
+                        $pjm[$x]['event'][$idx]['jumlah_peserta']=$item->jumlah_peserta;
+                        $pjm[$x]['event'][$idx]['pimpinan_rapat']=$item->pimpinan_rapat;
+                        $pjm[$x]['event'][$idx]['keterangan']=$item->keterangan;
+                        $pjm[$x]['event'][$idx]['lampiran']=$item->undangan;
+                        $pjm[$x]['event'][$idx]['satker']=isset($item->peminjam->eselon2->nama) ? $item->peminjam->eselon2->nama : '-';
+                        
+                        if($item->layout==1)
+                            $pjm[$x]['event'][$idx]['tata_letak']='Class Room';
+                        elseif($item->layout==2)
+                            $pjm[$x]['event'][$idx]['tata_letak']='U Shape';
+                        elseif($item->layout==3)
+                            $pjm[$x]['event'][$idx]['tata_letak']='Theater';
+                        elseif($item->layout==4)
+                            $pjm[$x]['event'][$idx]['tata_letak']='Upacara';
+                        elseif($item->layout==5)
+                            $pjm[$x]['event'][$idx]['tata_letak']='Lainnya';
+                        else
+                            $pjm[$x]['event'][$idx]['tata_letak']='-';
+                        // $pjm[$x]['event'][$idx]['notes']=isset($item->pinjamnotes->notes) ? $item->pinjamnotes->notes : '-';
 
-                        if($v->lampiran!='' && $v->lampiran!=NULL)
+                        $pinjamnote=PinjamNotes::where('pinjam_id',$item->id)->with('user')->get();
+                        $notes=$lampr='';
+                        $pjm[$x]['event'][$idx]['attachment']['name']='';
+                        $pjm[$x]['event'][$idx]['attachment']['path']='';
+                        foreach($pinjamnote as $k=>$v)
                         {
-                            $lampr=explode('/',$v->lampiran);
-                            $pjm[$x]['event'][$idx]['attachment']['name']=$lampr[count($lampr)-1];
-                            $pjm[$x]['event'][$idx]['attachment']['path']=$v->lampiran;
-                        }
-                        if($v->pengguna_pic_pinjam_id!='' && $v->pengguna_pic_pinjam_id!=NULL)
-                        {
-                            $pjm[$x]['event'][$idx]['picname']=$v->user->name;
-                        }
-                    }
-                    
-                    
-                    $pjm[$x]['event'][$idx]['notes']=$notes; 
-                    $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
-                    if($pinjamalat->count()!=0)
-                    {
+                            if($v->notes!='')
+                                $notes.=$v->notes.'<br>';
 
-                        foreach($pinjamalat as $k=>$v)
-                        {
-                           $pjm[$x]['event'][$idx]['pinjam_alat'][]=$v->alat->nama; 
+                            if($v->lampiran!='' && $v->lampiran!=NULL)
+                            {
+                                $lampr=explode('/',$v->lampiran);
+                                $pjm[$x]['event'][$idx]['attachment']['name']=$lampr[count($lampr)-1];
+                                $pjm[$x]['event'][$idx]['attachment']['path']=$v->lampiran;
+                            }
+                            if($v->pengguna_pic_pinjam_id!='' && $v->pengguna_pic_pinjam_id!=NULL)
+                            {
+                                $pjm[$x]['event'][$idx]['picname']=$v->user->name;
+                            }
                         }
+                        
+                        
+                        $pjm[$x]['event'][$idx]['notes']=$notes; 
+                        $pinjamalat=PinjamAlat::where('pinjam_id',$item->id)->get();
+                        if($pinjamalat->count()!=0)
+                        {
+
+                            foreach($pinjamalat as $k=>$v)
+                            {
+                            $pjm[$x]['event'][$idx]['pinjam_alat'][]=$v->alat->nama; 
+                            }
+                        }
+                        else
+                            $pjm[$x]['event'][$idx]['pinjam_alat']=array();
+                        // $pjm[$x]['event'][$idx]['pinjam_alat']=isset($item->pinjamalat->id) ? $item->pinjamalat->id : '-';
+                        // $pjm[$x]['event'][$idx]['satker']=$item->peminjam->id;
+                        $idx++;
                     }
-                    else
-                        $pjm[$x]['event'][$idx]['pinjam_alat']=array();
-                    // $pjm[$x]['event'][$idx]['pinjam_alat']=isset($item->pinjamalat->id) ? $item->pinjamalat->id : '-';
-                    // $pjm[$x]['event'][$idx]['satker']=$item->peminjam->id;
-                    $idx++;
                 }
                 $x++;
             }

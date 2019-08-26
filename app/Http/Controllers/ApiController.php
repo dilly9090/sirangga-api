@@ -215,32 +215,35 @@ class ApiController extends Controller
             $pinj=array();
             foreach($pinjam as $k=>$v)
             {
-                list($thn,$bln,$tgl)=explode('-',strtok($v->mulai,' '));
-                if((int)$bln==$month && $year==$thn)
+                if($v->status==1)
                 {
-                    $tgl=strtok($v->mulai,' ');
-                    $tgl2=strtok($v->selesai,' ');
-                    $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
-                    foreach($period as $pk=>$pv)
+                    list($thn,$bln,$tgl)=explode('-',strtok($v->mulai,' '));
+                    if((int)$bln==$month && $year==$thn)
                     {
-                        // $pinj[$tgl][]=$v;
-                        $pinj[$pv][]=$v;
+                        $tgl=strtok($v->mulai,' ');
+                        $tgl2=strtok($v->selesai,' ');
+                        $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+                        foreach($period as $pk=>$pv)
+                        {
+                            // $pinj[$tgl][]=$v;
+                            $pinj[$pv][]=$v;
+                        }
+                        // $pinj[]=$v;
                     }
-                    // $pinj[]=$v;
-                }
-                
-                list($thn,$bln,$tgl)=explode('-',strtok($v->selesai,' '));
-                if((int)$bln==$month && $year==$thn)
-                {
-                    $tgl=strtok($v->mulai,' ');
-                    $tgl2=strtok($v->selesai,' ');
-                    $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
-                    foreach($period as $pk=>$pv)
+                    
+                    list($thn,$bln,$tgl)=explode('-',strtok($v->selesai,' '));
+                    if((int)$bln==$month && $year==$thn)
                     {
-                        // $pinj[$tgl][]=$v;
-                        $pinj[$pv][]=$v;
+                        $tgl=strtok($v->mulai,' ');
+                        $tgl2=strtok($v->selesai,' ');
+                        $period=$this->date_range($tgl, $tgl2, "+1 day", "Y-m-d");
+                        foreach($period as $pk=>$pv)
+                        {
+                            // $pinj[$tgl][]=$v;
+                            $pinj[$pv][]=$v;
+                        }
+                        // $pinj[]=$v;
                     }
-                    // $pinj[]=$v;
                 }
             }
             $x=0;
@@ -485,7 +488,7 @@ class ApiController extends Controller
     {
         // $pinjam=Pinjam::whereBetween('mulai', [$date1, $date2])->orWhereBetween('selesai', [$date1, $date2])
         //         ->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
-        $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
+        $pinjam=Pinjam::where('status',1)->with('peminjam')->with('ruang')->with('pinjamnotes')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
         // $pinjam=Pinjam::with('peminjam')->with('ruang')->with('pinjamnotes')->with('peminjam')->with('user')->with('pinjamalat')->orderBy('mulai','desc')->orderBy('selesai','desc')->get();
         // return $pinjam;
         if($pinjam->count()!=0)

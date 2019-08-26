@@ -462,8 +462,8 @@ class ApiController extends Controller
                         // $pjm[$x]['event'][$idx]['satker']=$item->peminjam->id;
                         $idx++;
                     }
+                    $x++;
                 }
-                $x++;
             }
             $data['data']=$pjm;
             $data['status']='success';

@@ -428,13 +428,14 @@ class ApiController extends Controller
                         $pinj[$x]['pinjamalat'][$xx]['nama']=$va->alat->nama;
                         $pinj[$x]['pinjamalat'][$xx]['kapasitas']=$va->alat->kapasitas;
 
-                        $pinj[$x]['pinjam_alat'][$xx][]=$v->alat->nama; 
+                        $pinj[$x]['pinjam_alat'][$xx][]=$va->alat->nama; 
 
                         $xx++;
                     }
                 }
                 else
-                    $pinj[$x]['event'][$idx]['pinjam_alat']=array();
+                    $pinj[$x]['pinjam_alat']=array();
+
                 $x++;
             }
             $data['data']=$pinj;
